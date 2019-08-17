@@ -86,9 +86,9 @@ def import_pretix_data(
             preorder = existing[order['code']]
             created = False
 
-            if preorder.is_paid != (order['status'] == 'p') or preorder.is_canceled != (order['status'] in ('c', 'e')):
+            if preorder.is_paid != (order['status'] == 'p') or preorder.is_canceled != (order['status'] not in ('p', 'n')):
                 preorder.is_paid = order['status'] == 'p'
-                preorder.is_canceled = (order['status'] in ('c', 'e'))
+                preorder.is_canceled = (order['status'] not in ('n', 'p'))
                 preorder.save(update_fields=['is_paid', 'is_canceled'])
         else:
             preorder = Preorder.objects.create(
