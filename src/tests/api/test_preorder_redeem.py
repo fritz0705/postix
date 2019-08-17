@@ -35,12 +35,12 @@ def test_invalid(api_with_session):
 
 
 @pytest.mark.django_db
-def test_unpaid(api_with_session):
+def test_canceled(api_with_session):
     assert help_test_for_error(
-        api_with_session, preorder_position_factory().secret
+        api_with_session, preorder_position_factory(canceled=True).secret
     ) == {
         'success': False,
-        'message': 'This ticket has not been paid for.',
+        'message': 'This ticket has been canceled or is expired.',
         'type': 'error',
         'missing_field': None,
         'bypass_price': None,
@@ -255,3 +255,21 @@ def test_success(api_with_session, event_settings):
     assert j['success']
     assert j['positions'][0]['success']
     assert is_redeemed(pp)
+
+
+@pytest.mark.django_db
+def test_success_unpaid(api_with_session, event_settings):
+    pp = preorder_position_factory(paid=False, price=23.42)
+    secret = pp.secret
+    req = {'positions': [{'type': 'redeem', 'secret': secret}]}
+    response = api_with_session.post('/api/transactions/', req, format='json')
+    assert response.status_code == 400
+    j = json.loads(response.content.decode())
+    assert not j['success']
+    assert not j['positions'][0]['success']
+    req = {'positions': [{'type': 'redeem', 'secret': secret, 'bypass_price': '23.42'}]}
+    response = api_with_session.post('/api/transactions/', req, format='json')
+    assert response.status_code == 201
+    j = json.loads(response.content.decode())
+    assert j['success']
+    assert j['positions'][0]['success']

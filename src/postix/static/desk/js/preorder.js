@@ -30,8 +30,8 @@ var preorder = {
                     dialog.show_error(res.redemption_message);
                     preorder.take_focus();
                     return;
-                } else if (!res.is_paid) {
-                    dialog.show_error(gettext('Ticket has not been paid.'));
+                } else if (res.is_canceled) {
+                    dialog.show_error(gettext('Ticket has been canceled or is expired.'));
                     preorder.take_focus();
                     return;
                 }

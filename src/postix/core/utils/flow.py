@@ -73,8 +73,20 @@ def redeem_preorder_ticket(**kwargs) -> TransactionPosition:
     except PreorderPosition.DoesNotExist:
         raise FlowError(_('No ticket could be found with the given secret.'))
 
+    if pp.preorder.is_canceled:
+        raise FlowError(_('This ticket has been canceled or is expired.'))
+
     if not pp.preorder.is_paid:
-        raise FlowError(_('This ticket has not been paid for.'))
+        if pp.price is not None and bypass_price_paying >= pp.price:
+            bypass_price_paying -= pp.price
+            bypass_taxrate = pp.product.tax_rate
+        else:
+            raise FlowError(
+                _('This ticket has not been paid for.'),
+                type='confirmation',
+                missing_field='pay_for_unpaid',
+                bypass_price=pp.price,
+            )
 
     if not pp.product.is_availably_by_time:
         raise FlowError(_('This product is currently not available.'))

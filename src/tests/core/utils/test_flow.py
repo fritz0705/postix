@@ -29,10 +29,36 @@ def test_invalid():
 
 
 @pytest.mark.django_db
-def test_unpaid():
+def test_canceled():
     with pytest.raises(FlowError) as excinfo:
-        redeem_preorder_ticket(secret=preorder_position_factory().secret)
+        redeem_preorder_ticket(secret=preorder_position_factory(canceled=True).secret)
+    assert excinfo.value.message == 'This ticket has been canceled or is expired.'
+
+
+@pytest.mark.django_db
+def test_unpaid_no_price():
+    pp = preorder_position_factory(paid=False, price=None)
+    with pytest.raises(FlowError) as excinfo:
+        redeem_preorder_ticket(secret=pp.secret)
     assert excinfo.value.message == 'This ticket has not been paid for.'
+    assert excinfo.value.bypass_price is None
+
+
+@pytest.mark.django_db
+def test_unpaid_price():
+    pp = preorder_position_factory(paid=False, price=23.0)
+    with pytest.raises(FlowError) as excinfo:
+        redeem_preorder_ticket(secret=pp.secret)
+    assert excinfo.value.message == 'This ticket has not been paid for.'
+    assert excinfo.value.bypass_price == Decimal('23.00')
+
+    pos = redeem_preorder_ticket(secret=pp.secret, bypass_price=Decimal('23.00'))
+    assert pos.value == Decimal('23.00')
+    assert pos.tax_rate == Decimal('19.00')
+    pos.transaction = transaction_factory()
+    pos.save()
+    assert pp.is_redeemed
+    assert pos.transaction.value == Decimal('23.00')
 
 
 @pytest.mark.django_db

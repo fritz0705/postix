@@ -36,7 +36,7 @@
                         </a>
                     </td>
                     <td>
-                        {% if p.is_paid %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}
+                    {% if p.is_canceled %}{% trans "Canceled" %}{% elif p.is_paid %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}
                     </td>
                 {% endfor %}
                 </tbody>

@@ -119,19 +119,21 @@ def product_factory(items=False):
     return p
 
 
-def preorder_factory(paid=False):
+def preorder_factory(paid=False, canceled=False):
     return Preorder.objects.create(
         order_code=''.join(random.choice(string.ascii_letters) for _ in times(24)),
         is_paid=paid,
+        is_canceled=canceled,
     )
 
 
-def preorder_position_factory(paid=False, redeemed=False, information=None):
+def preorder_position_factory(paid=False, redeemed=False, canceled=False, price=Decimal('0.00'), information=None):
     pp = PreorderPosition.objects.create(
-        preorder=preorder_factory(paid),
+        preorder=preorder_factory(paid, canceled),
         secret=''.join(random.choice(string.ascii_letters) for _ in times(24)),
         product=product_factory(),
         information=information,
+        price=price
     )
     if redeemed:
         TransactionPosition.objects.create(
@@ -186,7 +188,7 @@ def list_constraint_entry_factory(list_constraint, redeemed=False):
     e = ListConstraintEntry.objects.create(
         list=list_constraint,
         name=fake.name(),
-        identifier='foobar' + str(random.randint(0, 100000)),
+        identifier='foobar' + get_random_string(32),
     )
     if redeemed:
         TransactionPosition.objects.create(

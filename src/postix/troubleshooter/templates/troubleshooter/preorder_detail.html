@@ -4,10 +4,12 @@
 
 {% block headline %}
     {% trans "Preorder" %} {{ preorder.order_code }}
-    {% if preorder.is_paid %}
+    {% if preorder.is_canceled %}
+       <span class="label label-danger">{% trans "Canceled" %}</span>
+    {% elif preorder.is_paid %}
         <span class="label label-success">{% trans "Paid" %}</span>
     {% else %}
-        <span class="label label-danger">{% trans "Unpaid" %}</span>
+        <span class="label label-warning">{% trans "Unpaid" %}</span>
     {% endif %}
 {% endblock %}
 

@@ -15,10 +15,10 @@ from django.views.generic.list import ListView
 
 from postix.core.utils.flow import FlowError, reverse_session
 
+from .. import checks
 from ...core.models import (
     Cashdesk, CashdeskSession, CashMovement, ItemMovement, Record, User,
 )
-from .. import checks
 from ..forms import (
     ItemMovementFormSetHelper, SessionBaseForm, get_form_and_formset,
 )

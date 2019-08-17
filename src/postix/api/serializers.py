@@ -27,7 +27,7 @@ class PreorderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Preorder
-        fields = ('order_code', 'is_paid', 'warning_text', 'positions')
+        fields = ('order_code', 'is_paid', 'is_canceled', 'warning_text', 'positions')
 
 
 class ProductSerializer(serializers.ModelSerializer):

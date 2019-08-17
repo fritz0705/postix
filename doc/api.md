@@ -131,6 +131,7 @@ Sample result object (embedded in pagination as described above):
     {
         "order_code": "12346",
         "is_paid": true,
+        "is_canceled": false,
         "warning_text": "",
         "positions": [
             {

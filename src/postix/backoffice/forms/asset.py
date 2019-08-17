@@ -1,5 +1,5 @@
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset
+from crispy_forms.layout import Fieldset, Layout
 from django import forms
 
 from postix.core.models import Asset, AssetPosition

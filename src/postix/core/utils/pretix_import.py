@@ -86,12 +86,15 @@ def import_pretix_data(
             preorder = existing[order['code']]
             created = False
 
-            if preorder.is_paid != (order['status'] == 'p'):
+            if preorder.is_paid != (order['status'] == 'p') or preorder.is_canceled != (order['status'] in ('c', 'e')):
                 preorder.is_paid = order['status'] == 'p'
-                preorder.save()
+                preorder.is_canceled = (order['status'] in ('c', 'e'))
+                preorder.save(update_fields=['is_paid', 'is_canceled'])
         else:
             preorder = Preorder.objects.create(
-                order_code=order['code'], is_paid=(order['status'] == 'p')
+                order_code=order['code'],
+                is_paid=(order['status'] == 'p'),
+                is_canceled=(order['status'] in ('c', 'e')),
             )
             created = True
 
@@ -120,12 +123,15 @@ def import_pretix_data(
 
             if not pp.pk:
                 pp.information = information
+                pp.price = Decimal(position['price'])
                 pp.product = product_dict[position['item']]
                 to_insert.append(pp)
             elif (
                 pp.information != information
                 or pp.product_id != product_dict[position['item']].pk
+                or str(pp.price) != position['price']
             ):
+                pp.price = Decimal(position['price'])
                 pp.information = information
                 pp.product = product_dict[position['item']]
                 pp.save()

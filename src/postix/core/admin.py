@@ -148,8 +148,8 @@ class PreorderPositionInline(admin.TabularInline):
 
 @admin.register(Preorder)
 class PreorderAdmin(admin.ModelAdmin):
-    list_filter = ('is_paid',)
-    list_display = ('order_code', 'is_paid')
+    list_filter = ('is_paid', 'is_canceled')
+    list_display = ('order_code', 'is_paid', 'is_canceled')
     search_fields = ('order_code',)
     inlines = (PreorderPositionInline,)
 

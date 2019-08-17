@@ -68,7 +68,7 @@ def check_tax_rates():
                 '{products}'
             ).format(
                 products=', '.join(
-                    str(p) for p in Product.objects.filter(tax_rate=0).exclude(price=0)
+                    str(p) for p in Product.objects.filter(tax_rate=0)
                 )
             )
         )

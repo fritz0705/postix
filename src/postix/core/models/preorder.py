@@ -6,6 +6,7 @@ from django.utils.translation import ugettext as _
 class Preorder(models.Model):
     order_code = models.CharField(max_length=254, db_index=True)
     is_paid = models.BooleanField(default=False)
+    is_canceled = models.BooleanField(default=False)
     warning_text = models.TextField(blank=True)
 
     def __str__(self) -> str:
@@ -17,6 +18,7 @@ class PreorderPosition(models.Model):
         Preorder, related_name='positions', on_delete=models.PROTECT
     )
     secret = models.CharField(max_length=254, db_index=True, unique=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     product = models.ForeignKey(
         'Product', related_name='preorder_positions', on_delete=models.PROTECT
     )
@@ -37,6 +39,10 @@ class PreorderPosition(models.Model):
     @property
     def is_paid(self) -> bool:
         return self.preorder.is_paid
+
+    @property
+    def is_canceled(self) -> bool:
+        return self.preorder.is_canceled
 
     @property
     def product_name(self) -> str:
