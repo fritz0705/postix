@@ -38,6 +38,7 @@ def _build_product_dict(data, log, style):
                         import_source_id=variation_name,
                         price=Decimal(var['price']),
                         tax_rate=Decimal(item['tax_rate']),
+                        is_admission=item['admission'],
                     )
                     created_items += 1
                 product_dict[item['id'], var['id']] = product
@@ -54,6 +55,7 @@ def _build_product_dict(data, log, style):
                     name=item['name'],
                     price=Decimal(item['price']),
                     tax_rate=Decimal(item['tax_rate']),
+                    is_admission=item['admission'],
                 )
                 created_items += 1
             product_dict[item['id'], None] = product

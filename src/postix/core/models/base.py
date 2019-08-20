@@ -162,6 +162,7 @@ class Product(models.Model):
         validators=[MinValueValidator(Decimal('0.00'))],
     )
     is_visible = models.BooleanField(default=True)
+    is_admission = models.BooleanField(default=False)
     requires_authorization = models.BooleanField(default=False)
     items = models.ManyToManyField('Item', through='ProductItem', blank=True)
     priority = models.IntegerField(
