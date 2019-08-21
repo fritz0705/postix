@@ -70,6 +70,12 @@ class RecordUpdateForm(RecordCreateForm):
         model = Record
         fields = ('type', 'datetime', 'entity', 'carrier', 'amount', 'backoffice_user')
 
+    def save(self, *args, **kwargs):
+        i = super().save(*args, **kwargs)
+        self.instance.cash_movement.cash = (-1 if self.instance.type == "inflow" else 1) * self.instance.amount
+        self.instance.cash_movement.save()
+        return i
+
 
 class RecordEntityForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
