@@ -101,6 +101,28 @@ var commands = {
             + "</p>");
     },
 
+    '/snake': function (args) {
+        commands._info_view("<canvas id='game' width='400' height='400'></canvas>"
+            + "<script src='/static/postix/desk/js/games/snake.js' type='text/javascript'></script>");
+    },
+
+    '/tetris': function (args) {
+        commands._info_view("<script src='/static/postix/desk/js/games/blockrain.js'></script>"
+            + "<link rel='stylesheet' href=/static/postix/desk/css/games/blockrain.css>"
+            + "<div class='game' style='width:250px; height:500px; margin:auto;'></div>"
+            + "<script>"
+            + "    $('.game').blockrain({theme: 'candy'});"
+            + "    $('.game').blockrain('start');"
+            + "</script>");
+    },
+
+    '/frogger': function (args) {
+        commands._info_view("<script src='/static/postix/desk/js/games/frogger.js'></script>"
+            + "<div id='game-div'>"
+            + "    <canvas id='game' height='565' width='399'></canvas>"
+            + "</div>");
+    },
+
     process: function (command) {
         if (command.slice(0, 1) !== "/") {
             command = "/" + command;
