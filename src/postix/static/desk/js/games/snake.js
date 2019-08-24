@@ -1,127 +1,215 @@
-// https://gist.github.com/mhuggins/28c387ebb665c4b73db1d3af61d6dcec
-
-var KEY_LEFT = 37;
-var KEY_UP = 38;
-var KEY_RIGHT = 39;
-var KEY_DOWN = 40;
-
-var vendors = ["webkit", "moz", "o", "ms"];
-
-for (var x = 0; x < vendors.length && !window.requestAnimationFrame; x++) {
-    window.requestAnimationFrame = window[vendors[x] + "RequestAnimationFrame"];
-    window.cancelAnimationFrame = window[vendors[x] + "CancelAnimationFrame"] ||
-                                  window[vendors[x] + "CancelRequestAnimationFrame"];
-}
-
-function Game(context) {
-  this.context = context;
-  this.boardSize = 20;
-  this.tileSize = 20;
-  this.fps = 20;
-  this.segments = [];
-  this.length = 5;
-  this.position = { x: this.boardSize / 2, y: this.boardSize / 2 };
-  this.foodPosition = this._getRandomPosition();
-  this.direction = { x: 1, y: 0 };
-}
-
-Game.prototype.start = function(win) {
-  document.addEventListener("keydown", function(event) {
-    switch (event.keyCode) {
-      case KEY_LEFT:
-        if (this.direction.x === 0) {
-          this.direction = { x: -1, y: 0 };
-        }
-        break;
-      case KEY_UP:
-        if (this.direction.y === 0) {
-          this.direction = { x: 0, y: -1 };
-        }
-        break;
-      case KEY_RIGHT:
-        if (this.direction.x === 0) {
-          this.direction = { x: 1, y: 0 };
-        }
-        break;
-      case KEY_DOWN:
-        if (this.direction.y === 0) {
-          this.direction = { x: 0, y: 1 };
-        }
-        break;
-    }
-  }.bind(this));
-
-  this.lastTime = Date.now();
-  this._loop(win);
-};
-
-Game.prototype._loop = function(win) {
-  var fpsInterval = 1000 / this.fps;
-  var currentTime = Date.now();
-  var elapsedTime = currentTime - this.lastTime;
-
-  win.requestAnimationFrame(function() {
-    if (elapsedTime > fpsInterval) {
-      this._move();
-      this._draw();
-      this.lastTime = currentTime - (elapsedTime % fpsInterval);
-    }
-
-    this._loop(win);
-  }.bind(this));
-};
-
-Game.prototype._move = function() {
-  this.position = { x: this.position.x + this.direction.x, y: this.position.y + this.direction.y };
-
-  ["x", "y"].forEach(function(direction) {
-    while (this.position[direction] < 0) {
-      this.position[direction] += this.boardSize;
-    }
-    while (this.position[direction] >= this.boardSize) {
-      this.position[direction] -= this.boardSize;
-    }
-  }.bind(this));
-
-  this.segments.push(this.position);
-
-  while (this.segments.length > this.length) {
-    this.segments.shift();
-  }
-
-  if (this.position.x === this.foodPosition.x && this.position.y === this.foodPosition.y) {
-    this.length++;
-    this.foodPosition = this._getRandomPosition();
-  }
-};
-
-Game.prototype._draw = function() {
-  this.context.clearRect(0, 0, this.boardSize * this.tileSize, this.boardSize * this.tileSize);
-
-  this.context.fillStyle = "rgb(0, 0, 0)";
-  this.context.fillRect(0, 0, this.boardSize * this.tileSize, this.boardSize * this.tileSize);
-
-  this.context.fillStyle = "rgb(192, 192, 192)";
-  this.segments.forEach(function(segment) {
-    this.context.fillRect(segment.x * this.tileSize, segment.y * this.tileSize, this.tileSize, this.tileSize);
-  }.bind(this));
-
-  this.context.fillStyle = "rgb(0, 255, 0)";
-  this.context.fillRect(this.foodPosition.x * this.tileSize, this.foodPosition.y * this.tileSize, this.tileSize, this.tileSize);
-};
-
-Game.prototype._getRandomPosition = function() {
-  return {
-    x: Math.floor(Math.random() * this.boardSize),
-    y: Math.floor(Math.random() * this.boardSize)
-  };
-};
-
-var canvas = document.getElementById("game");
+/*
+ * Released under the MIT license
+ * https://github.com/JDStraughan/html5-snake
+ */
+var canvas = document.getElementById("the-game");
 var context = canvas.getContext("2d");
+var game, snake, food;
 
-if (context !== null) {
-  new Game(context).start(window);
-} else {
-  alert("Unable to obtain 2D canvas context.");
+game = {
+
+  score: 0,
+  fps: 8,
+  over: false,
+  message: null,
+
+  start: function() {
+    game.over = false;
+    game.message = null;
+    game.score = 0;
+    game.fps = 8;
+    snake.init();
+    food.set();
+  },
+
+  stop: function() {
+    game.over = true;
+    game.message = 'GAME OVER - PRESS SPACEBAR';
+  },
+
+  drawBox: function(x, y, size, color) {
+    context.fillStyle = color;
+    context.beginPath();
+    context.moveTo(x - (size / 2), y - (size / 2));
+    context.lineTo(x + (size / 2), y - (size / 2));
+    context.lineTo(x + (size / 2), y + (size / 2));
+    context.lineTo(x - (size / 2), y + (size / 2));
+    context.closePath();
+    context.fill();
+  },
+
+  drawScore: function() {
+    context.fillStyle = '#999';
+    context.font = (canvas.height) + 'px Impact, sans-serif';
+    context.textAlign = 'center';
+    context.fillText(game.score, canvas.width / 2, canvas.height * 0.9);
+  },
+
+  drawMessage: function() {
+    if (game.message !== null) {
+      context.fillStyle = '#00F';
+      context.strokeStyle = '#FFF';
+      context.font = (canvas.height / 10) + 'px Impact';
+      context.textAlign = 'center';
+      context.fillText(game.message, canvas.width / 2, canvas.height / 2);
+      context.strokeText(game.message, canvas.width / 2, canvas.height / 2);
+    }
+  },
+
+  resetCanvas: function() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+};
+
+snake = {
+
+  size: canvas.width / 40,
+  x: null,
+  y: null,
+  color: '#0F0',
+  direction: 'left',
+  sections: [],
+
+  init: function() {
+    snake.sections = [];
+    snake.direction = 'left';
+    snake.x = canvas.width / 2 + snake.size / 2;
+    snake.y = canvas.height / 2 + snake.size / 2;
+    for (var i = snake.x + (5 * snake.size); i >= snake.x; i -= snake.size) {
+      snake.sections.push(i + ',' + snake.y);
+    }
+  },
+
+  move: function() {
+    switch (snake.direction) {
+      case 'up':
+        snake.y -= snake.size;
+        break;
+      case 'down':
+        snake.y += snake.size;
+        break;
+      case 'left':
+        snake.x -= snake.size;
+        break;
+      case 'right':
+        snake.x += snake.size;
+        break;
+    }
+    snake.checkCollision();
+    snake.checkGrowth();
+    snake.sections.push(snake.x + ',' + snake.y);
+  },
+
+  draw: function() {
+    for (var i = 0; i < snake.sections.length; i++) {
+      snake.drawSection(snake.sections[i].split(','));
+    }
+  },
+
+  drawSection: function(section) {
+    game.drawBox(parseInt(section[0]), parseInt(section[1]), snake.size, snake.color);
+  },
+
+  checkCollision: function() {
+    if (snake.isCollision(snake.x, snake.y) === true) {
+      game.stop();
+    }
+  },
+
+  isCollision: function(x, y) {
+    if (x < snake.size / 2 ||
+        x > canvas.width ||
+        y < snake.size / 2 ||
+        y > canvas.height ||
+        snake.sections.indexOf(x + ',' + y) >= 0) {
+      return true;
+    }
+  },
+
+  checkGrowth: function() {
+    if (snake.x == food.x && snake.y == food.y) {
+      game.score++;
+      if (game.score % 5 == 0 && game.fps < 60) {
+        game.fps++;
+      }
+      food.set();
+    } else {
+      snake.sections.shift();
+    }
+  }
+
+};
+
+food = {
+
+  size: null,
+  x: null,
+  y: null,
+  color: '#0FF',
+
+  set: function() {
+    food.size = snake.size;
+    food.x = (Math.ceil(Math.random() * 10) * snake.size * 4) - snake.size / 2;
+    food.y = (Math.ceil(Math.random() * 10) * snake.size * 3) - snake.size / 2;
+  },
+
+  draw: function() {
+    game.drawBox(food.x, food.y, food.size, food.color);
+  }
+
+};
+
+var inverseDirection = {
+  'up': 'down',
+  'left': 'right',
+  'right': 'left',
+  'down': 'up'
+};
+
+var keys = {
+  up: [38, 75, 87],
+  down: [40, 74, 83],
+  left: [37, 65, 72],
+  right: [39, 68, 76],
+  start_game: [13, 32]
+};
+
+function getKey(value){
+  for (var key in keys){
+    if (keys[key] instanceof Array && keys[key].indexOf(value) >= 0){
+      return key;
+    }
+  }
+  return null;
 }
+
+addEventListener("keydown", function (e) {
+    var lastKey = getKey(e.keyCode);
+    if (['up', 'down', 'left', 'right'].indexOf(lastKey) >= 0
+        && lastKey != inverseDirection[snake.direction]) {
+      snake.direction = lastKey;
+    } else if (['start_game'].indexOf(lastKey) >= 0 && game.over) {
+      game.start();
+    }
+}, false);
+
+var requestAnimationFrame = window.requestAnimationFrame ||
+      window.webkitRequestAnimationFrame ||
+      window.mozRequestAnimationFrame;
+
+function loop() {
+  if (game.over == false) {
+    game.resetCanvas();
+    game.drawScore();
+    snake.move();
+    food.draw();
+    snake.draw();
+    game.drawMessage();
+  }
+  setTimeout(function() {
+    requestAnimationFrame(loop);
+  }, 1000 / game.fps);
+}
+
+requestAnimationFrame(loop);

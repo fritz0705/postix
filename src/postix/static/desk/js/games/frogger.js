@@ -1,3 +1,7 @@
+/*
+ * Released under the MIT license
+ * https://github.com/natetarrh/frogger/blob/master/LICENSE
+ */
 (function() {
 
 /* Local Vars:
