@@ -48,6 +48,7 @@ postix requires Python 3.5+. Install in a virtalenv of any kind::
 
   pip install --upgrade setuptools pip
   pip install -r requirements.txt
+  pip install -r requirements-dev.txt  # Only for development setup
   python manage.py migrate
   python manage.py createsuperuser
 
@@ -82,7 +83,7 @@ environment variables:
 
 * ``POSTIX_DB_NAME`` -- Database name (or filename in case of SQLite). Defaults
   to ``db.sqlite3``
-  
+
 * ``POSTIX_DB_USER`` -- Database user
 
 * ``POSTIX_DB_PASS`` -- Database password

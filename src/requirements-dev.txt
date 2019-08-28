@@ -1,0 +1,7 @@
+# Testing and development requirements
+black
+pytest
+pytest-django
+Faker==0.8.*
+pytest-cov==2.*
+PyYAML==5.1

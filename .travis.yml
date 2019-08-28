@@ -7,10 +7,10 @@ env:
 install:
     - pip install -U pip wheel setuptools codecov coverage
     - pip install -r src/requirements.txt
+    - pip install -r src/requirements-dev.txt
 script:
     - cd src
-    - flake8 .
-    - isort -rc -c .
+    - black --check .
     - python manage.py check
     - py.test --cov=postix tests/ && codecov
 cache:
