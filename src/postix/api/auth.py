@@ -18,15 +18,15 @@ class TokenAuthentication(authentication.TokenAuthentication):
         try:
             session = CashdeskSession.objects.get(api_token=key)
         except CashdeskSession.DoesNotExist:
-            raise exceptions.AuthenticationFailed('Invalid token.')
+            raise exceptions.AuthenticationFailed("Invalid token.")
 
         if not session.is_active():
-            raise exceptions.AuthenticationFailed('Your session has ended.')
+            raise exceptions.AuthenticationFailed("Your session has ended.")
 
         if session.cashdesk != detect_cashdesk(self.request):
             raise exceptions.AuthenticationFailed(
                 _(
-                    'Your token is valid for a different cashdesk. Your IP is: {}'
+                    "Your token is valid for a different cashdesk. Your IP is: {}"
                 ).format(get_ip_address(self.request))
             )
 

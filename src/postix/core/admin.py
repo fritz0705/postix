@@ -5,10 +5,26 @@ from django.contrib.auth.models import Group
 from solo.admin import SingletonModelAdmin
 
 from .models import (
-    Asset, Cashdesk, CashdeskSession, EventSettings, Item, ItemMovement,
-    ListConstraint, ListConstraintEntry, ListConstraintProduct, Preorder,
-    PreorderPosition, Product, ProductItem, Quota, TimeConstraint, Transaction,
-    TransactionPosition, User, WarningConstraint, WarningConstraintProduct,
+    Asset,
+    Cashdesk,
+    CashdeskSession,
+    EventSettings,
+    Item,
+    ItemMovement,
+    ListConstraint,
+    ListConstraintEntry,
+    ListConstraintProduct,
+    Preorder,
+    PreorderPosition,
+    Product,
+    ProductItem,
+    Quota,
+    TimeConstraint,
+    Transaction,
+    TransactionPosition,
+    User,
+    WarningConstraint,
+    WarningConstraintProduct,
 )
 
 
@@ -17,10 +33,10 @@ class EventSettingsAdminForm(forms.ModelForm):
         model = EventSettings
         exclude = []
         widgets = {
-            'invoice_address': forms.widgets.Textarea,
-            'invoice_footer': forms.widgets.Textarea,
-            'receipt_address': forms.widgets.Textarea,
-            'receipt_footer': forms.widgets.Textarea,
+            "invoice_address": forms.widgets.Textarea,
+            "invoice_footer": forms.widgets.Textarea,
+            "receipt_address": forms.widgets.Textarea,
+            "receipt_footer": forms.widgets.Textarea,
         }
 
 
@@ -33,44 +49,44 @@ class EventSettingsAdmin(SingletonModelAdmin):
 class AuthorAdmin(BaseUserAdmin):
     change_user_password_template = None
     fieldsets = (
-        (None, {'fields': ('username', 'password', 'auth_token')}),
-        ('Personal info', {'fields': ('firstname', 'lastname')}),
+        (None, {"fields": ("username", "password", "auth_token")}),
+        ("Personal info", {"fields": ("firstname", "lastname")}),
         (
-            'Permissions',
+            "Permissions",
             {
-                'fields': (
-                    'is_active',
-                    'is_superuser',
-                    'is_backoffice_user',
-                    'is_troubleshooter',
+                "fields": (
+                    "is_active",
+                    "is_superuser",
+                    "is_backoffice_user",
+                    "is_troubleshooter",
                 )
             },
         ),
-        ('Important dates', {'fields': ('last_login',)}),
+        ("Important dates", {"fields": ("last_login",)}),
     )
     add_fieldsets = (
         (
             None,
-            {'classes': ('wide',), 'fields': ('username', 'password1', 'password2')},
+            {"classes": ("wide",), "fields": ("username", "password1", "password2")},
         ),
     )
     list_display = (
-        'username',
-        'firstname',
-        'lastname',
-        'is_active',
-        'is_superuser',
-        'is_backoffice_user',
-        'is_troubleshooter',
+        "username",
+        "firstname",
+        "lastname",
+        "is_active",
+        "is_superuser",
+        "is_backoffice_user",
+        "is_troubleshooter",
     )
     list_filter = (
-        'is_active',
-        'is_superuser',
-        'is_backoffice_user',
-        'is_troubleshooter',
+        "is_active",
+        "is_superuser",
+        "is_backoffice_user",
+        "is_troubleshooter",
     )
-    search_fields = ('firstname', 'lastname', 'username')
-    ordering = ('username',)
+    search_fields = ("firstname", "lastname", "username")
+    ordering = ("username",)
     filter_horizontal = []
 
 
@@ -81,23 +97,23 @@ class ProductItemInline(admin.TabularInline):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'is_visible')
-    list_filter = ('is_visible', 'requires_authorization')
-    search_fields = ('name',)
+    list_display = ("name", "price", "is_visible")
+    list_filter = ("is_visible", "requires_authorization")
+    search_fields = ("name",)
     inlines = (ProductItemInline,)
 
 
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ('name', 'initial_stock')
-    search_fields = ('name',)
+    list_display = ("name", "initial_stock")
+    search_fields = ("name",)
 
 
 @admin.register(Cashdesk)
 class CashdeskAdmin(admin.ModelAdmin):
-    list_display = ('name', 'ip_address', 'printer_queue_name', 'is_active')
-    search_fields = ('name',)
-    list_filter = ('is_active',)
+    list_display = ("name", "ip_address", "printer_queue_name", "is_active")
+    search_fields = ("name",)
+    list_filter = ("is_active",)
 
 
 class ItemMovementInline(admin.TabularInline):
@@ -107,19 +123,19 @@ class ItemMovementInline(admin.TabularInline):
 
 @admin.register(CashdeskSession)
 class CashdeskSessionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'cashdesk', 'user', 'start', 'end')
-    list_filter = ('start', 'end', 'cashdesk', 'user')
+    list_display = ("id", "cashdesk", "user", "start", "end")
+    list_filter = ("start", "end", "cashdesk", "user")
     inlines = (ItemMovementInline,)
 
 
 @admin.register(Quota)
 class QuotaAdmin(admin.ModelAdmin):
-    list_display = ('name', 'size')
+    list_display = ("name", "size")
 
 
 @admin.register(TimeConstraint)
 class TimeConstriantAdmin(admin.ModelAdmin):
-    list_display = ('name', 'start', 'end')
+    list_display = ("name", "start", "end")
 
 
 class ListConstraintProductInline(admin.TabularInline):
@@ -129,16 +145,16 @@ class ListConstraintProductInline(admin.TabularInline):
 
 @admin.register(ListConstraint)
 class ListConstriantAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-    exclude = ('products',)
+    list_display = ("name",)
+    exclude = ("products",)
     inlines = (ListConstraintProductInline,)
 
 
 @admin.register(ListConstraintEntry)
 class ListConstraintAdmin(admin.ModelAdmin):
-    list_display = ('name', 'identifier', 'list')
-    list_filter = ('list',)
-    search_fields = ('name', 'identifier')
+    list_display = ("name", "identifier", "list")
+    list_filter = ("list",)
+    search_fields = ("name", "identifier")
 
 
 class PreorderPositionInline(admin.TabularInline):
@@ -148,9 +164,9 @@ class PreorderPositionInline(admin.TabularInline):
 
 @admin.register(Preorder)
 class PreorderAdmin(admin.ModelAdmin):
-    list_filter = ('is_paid', 'is_canceled')
-    list_display = ('order_code', 'is_paid', 'is_canceled')
-    search_fields = ('order_code',)
+    list_filter = ("is_paid", "is_canceled")
+    list_display = ("order_code", "is_paid", "is_canceled")
+    search_fields = ("order_code",)
     inlines = (PreorderPositionInline,)
 
 
@@ -161,23 +177,23 @@ class WarningConstraintProductInline(admin.TabularInline):
 
 @admin.register(WarningConstraint)
 class WarningConstriantAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-    exclude = ('products',)
+    list_display = ("name",)
+    exclude = ("products",)
     inlines = (WarningConstraintProductInline,)
 
 
 class TransactionPositionInline(admin.TabularInline):
     model = TransactionPosition
     fields = (
-        'type',
-        'value',
-        'tax_rate',
-        'tax_value',
-        'product',
-        'reverses',
-        'listentry',
-        'preorder_position',
-        'authorized_by',
+        "type",
+        "value",
+        "tax_rate",
+        "tax_value",
+        "product",
+        "reverses",
+        "listentry",
+        "preorder_position",
+        "authorized_by",
     )
 
     def get_readonly_fields(self, request, obj=None):
@@ -192,8 +208,8 @@ class TransactionPositionInline(admin.TabularInline):
 
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'datetime', 'session')
-    fields = ('id', 'datetime', 'session', 'cash_given')
+    list_display = ("id", "datetime", "session")
+    fields = ("id", "datetime", "session", "cash_given")
     inlines = (TransactionPositionInline,)
 
     def get_readonly_fields(self, request, obj=None):

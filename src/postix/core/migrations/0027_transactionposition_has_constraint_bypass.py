@@ -7,14 +7,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0026_auto_20161114_2240'),
-    ]
+    dependencies = [("core", "0026_auto_20161114_2240")]
 
     operations = [
         migrations.AddField(
-            model_name='transactionposition',
-            name='has_constraint_bypass',
+            model_name="transactionposition",
+            name="has_constraint_bypass",
             field=models.BooleanField(default=False),
-        ),
+        )
     ]

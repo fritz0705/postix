@@ -4,12 +4,18 @@ from decimal import Decimal
 import pytest
 from django.utils.timezone import now
 from tests.factories import (
-    cashdesk_session_before_factory, transaction_factory,
-    transaction_position_factory, user_factory,
+    cashdesk_session_before_factory,
+    transaction_factory,
+    transaction_position_factory,
+    user_factory,
 )
 
 from postix.core.models import (
-    Item, ItemMovement, Product, ProductItem, TransactionPosition,
+    Item,
+    ItemMovement,
+    Product,
+    ProductItem,
+    TransactionPosition,
 )
 from postix.core.utils import times
 from postix.core.utils.flow import reverse_transaction
@@ -34,21 +40,21 @@ def test_cashdesk_device_actions():
     desk.signal_open()
     desk.signal_next()
     desk.signal_close()
-    assert 'Dummy' in str(desk.printer)
-    desk.printer_queue_name = 'printer1'
-    assert 'Dummy' not in str(desk.printer)
+    assert "Dummy" in str(desk.printer)
+    desk.printer_queue_name = "printer1"
+    assert "Dummy" not in str(desk.printer)
 
 
 @pytest.mark.django_db
 def test_current_items():
     session = cashdesk_session_before_factory(create_items=False)
     buser = user_factory(troubleshooter=True, superuser=True)
-    item_full = Item.objects.create(name='Full pass', description='', initial_stock=200)
+    item_full = Item.objects.create(name="Full pass", description="", initial_stock=200)
     item_1d = Item.objects.create(
-        name='One day pass', description='', initial_stock=100
+        name="One day pass", description="", initial_stock=100
     )
-    prod_full = Product.objects.create(name='Full ticket', price=23, tax_rate=19)
-    prod_1d = Product.objects.create(name='One day ticket', price=12, tax_rate=19)
+    prod_full = Product.objects.create(name="Full ticket", price=23, tax_rate=19)
+    prod_1d = Product.objects.create(name="One day ticket", price=12, tax_rate=19)
     ProductItem.objects.create(product=prod_full, item=item_full, amount=1)
     ProductItem.objects.create(product=prod_1d, item=item_1d, amount=1)
     ItemMovement.objects.create(
@@ -81,18 +87,18 @@ def test_current_items():
 
     assert session.get_current_items() == [
         {
-            'movements': 20,
-            'total': 0,
-            'transactions': 3,
-            'item': item_full,
-            'final_movements': 17,
+            "movements": 20,
+            "total": 0,
+            "transactions": 3,
+            "item": item_full,
+            "final_movements": 17,
         },
         {
-            'movements': 10,
-            'total': 3,
-            'transactions': 2,
-            'item': item_1d,
-            'final_movements': 5,
+            "movements": 10,
+            "total": 3,
+            "transactions": 2,
+            "item": item_1d,
+            "final_movements": 5,
         },
     ]
 
@@ -100,7 +106,7 @@ def test_current_items():
 @pytest.mark.django_db
 def test_cash_transaction_total():
     session = cashdesk_session_before_factory(create_items=False)
-    prod_full = Product.objects.create(name='Full ticket', price=23, tax_rate=19)
+    prod_full = Product.objects.create(name="Full ticket", price=23, tax_rate=19)
 
     for _ in times(3):
         transaction_position_factory(transaction_factory(session), prod_full)
@@ -110,7 +116,7 @@ def test_cash_transaction_total():
     reverse_transaction(trans_id=trans.pk, current_session=session)
 
     TransactionPosition.objects.create(
-        type='redeem',
+        type="redeem",
         value=10,
         tax_rate=19,
         product=prod_full,
@@ -124,7 +130,7 @@ def test_cash_transaction_total():
 @pytest.mark.django_db
 def test_product_sales():
     session = cashdesk_session_before_factory(create_items=False)
-    prod_full = Product.objects.create(name='Full ticket', price=23, tax_rate=19)
+    prod_full = Product.objects.create(name="Full ticket", price=23, tax_rate=19)
 
     for _ in times(3):
         transaction_position_factory(transaction_factory(session), prod_full)
@@ -132,7 +138,7 @@ def test_product_sales():
     reverse_transaction(trans_id=trans.transaction_id, current_session=session)
 
     TransactionPosition.objects.create(
-        type='redeem',
+        type="redeem",
         value=10,
         tax_rate=19,
         product=prod_full,
@@ -140,7 +146,7 @@ def test_product_sales():
         has_constraint_bypass=True,
     )
     TransactionPosition.objects.create(
-        type='redeem',
+        type="redeem",
         value=0,
         tax_rate=0,
         product=prod_full,
@@ -148,33 +154,33 @@ def test_product_sales():
     )
 
     def keyfunc(d):
-        return d['value_single']
+        return d["value_single"]
 
     assert sorted(session.get_product_sales(), key=keyfunc) == sorted(
         [
             {
-                'product': prod_full,
-                'presales': 0,
-                'reversals': 1,
-                'sales': 4,
-                'value_total': Decimal('69.00'),
-                'value_single': Decimal('23.00'),
+                "product": prod_full,
+                "presales": 0,
+                "reversals": 1,
+                "sales": 4,
+                "value_total": Decimal("69.00"),
+                "value_single": Decimal("23.00"),
             },
             {
-                'product': prod_full,
-                'presales': 1,
-                'reversals': 0,
-                'sales': 0,
-                'value_total': Decimal('00.00'),
-                'value_single': Decimal('00.00'),
+                "product": prod_full,
+                "presales": 1,
+                "reversals": 0,
+                "sales": 0,
+                "value_total": Decimal("00.00"),
+                "value_single": Decimal("00.00"),
             },
             {
-                'product': prod_full,
-                'presales': 1,
-                'reversals': 0,
-                'sales': 0,
-                'value_total': Decimal('10.00'),
-                'value_single': Decimal('10.00'),
+                "product": prod_full,
+                "presales": 1,
+                "reversals": 0,
+                "sales": 0,
+                "value_total": Decimal("10.00"),
+                "value_single": Decimal("10.00"),
             },
         ],
         key=keyfunc,

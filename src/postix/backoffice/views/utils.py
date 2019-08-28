@@ -12,17 +12,17 @@ def is_backoffice_user(user: User) -> bool:
 
 
 class BackofficeUserRequiredMixin(UserPassesTestMixin):
-    login_url = 'backoffice:login'
+    login_url = "backoffice:login"
 
     def test_func(self) -> bool:
         return is_backoffice_user(self.request.user)
 
     def handle_no_permission(self):
-        return redirect('backoffice:login')
+        return redirect("backoffice:login")
 
 
 backoffice_user_required = user_passes_test(
-    is_backoffice_user, login_url='backoffice:login'
+    is_backoffice_user, login_url="backoffice:login"
 )
 
 
@@ -33,13 +33,13 @@ def is_superuser(user: User) -> bool:
 
 
 class SuperuserRequiredMixin(UserPassesTestMixin):
-    login_url = 'backoffice:login'
+    login_url = "backoffice:login"
 
     def test_func(self) -> bool:
         return is_superuser(self.request.user)
 
     def handle_no_permission(self):
-        return redirect('backoffice:login')
+        return redirect("backoffice:login")
 
 
-superuser_required = user_passes_test(is_superuser, login_url='backoffice:login')
+superuser_required = user_passes_test(is_superuser, login_url="backoffice:login")

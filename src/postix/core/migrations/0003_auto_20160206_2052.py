@@ -10,115 +10,180 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0002_auto_20160206_1747'),
-    ]
+    dependencies = [("core", "0002_auto_20160206_1747")]
 
     operations = [
         migrations.AddField(
-            model_name='preorderposition',
-            name='product',
-            field=models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, related_name='preorder_positions', to='core.Product'),
+            model_name="preorderposition",
+            name="product",
+            field=models.ForeignKey(
+                default=None,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="preorder_positions",
+                to="core.Product",
+            ),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='cashdesk',
-            name='display_address',
-            field=models.GenericIPAddressField(blank=True, null=True, verbose_name='Display IP address'),
+            model_name="cashdesk",
+            name="display_address",
+            field=models.GenericIPAddressField(
+                blank=True, null=True, verbose_name="Display IP address"
+            ),
         ),
         migrations.AlterField(
-            model_name='cashdesk',
-            name='ip_address',
-            field=models.GenericIPAddressField(unique=True, verbose_name='IP address'),
+            model_name="cashdesk",
+            name="ip_address",
+            field=models.GenericIPAddressField(unique=True, verbose_name="IP address"),
         ),
         migrations.AlterField(
-            model_name='cashdesk',
-            name='printer_queue_name',
-            field=models.CharField(blank=True, max_length=254, null=True, verbose_name='Printer queue name'),
+            model_name="cashdesk",
+            name="printer_queue_name",
+            field=models.CharField(
+                blank=True, max_length=254, null=True, verbose_name="Printer queue name"
+            ),
         ),
         migrations.AlterField(
-            model_name='cashdesksession',
-            name='api_token',
-            field=models.CharField(default=postix.core.models.cashdesk.generate_key, help_text='Used for non-browser sessions. Generated automatically.', max_length=254, verbose_name='API token'),
+            model_name="cashdesksession",
+            name="api_token",
+            field=models.CharField(
+                default=postix.core.models.cashdesk.generate_key,
+                help_text="Used for non-browser sessions. Generated automatically.",
+                max_length=254,
+                verbose_name="API token",
+            ),
         ),
         migrations.AlterField(
-            model_name='cashdesksession',
-            name='backoffice_user_after',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='supervised_session_ends', to=settings.AUTH_USER_MODEL, verbose_name='Backoffice operator after session'),
+            model_name="cashdesksession",
+            name="backoffice_user_after",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="supervised_session_ends",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Backoffice operator after session",
+            ),
         ),
         migrations.AlterField(
-            model_name='cashdesksession',
-            name='backoffice_user_before',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='supervised_session_starts', to=settings.AUTH_USER_MODEL, verbose_name='Backoffice operator before session'),
+            model_name="cashdesksession",
+            name="backoffice_user_before",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="supervised_session_starts",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Backoffice operator before session",
+            ),
         ),
         migrations.AlterField(
-            model_name='cashdesksession',
-            name='cash_after',
-            field=models.DecimalField(blank=True, decimal_places=2, max_digits=10, null=True, verbose_name='Cash in drawer after session'),
+            model_name="cashdesksession",
+            name="cash_after",
+            field=models.DecimalField(
+                blank=True,
+                decimal_places=2,
+                max_digits=10,
+                null=True,
+                verbose_name="Cash in drawer after session",
+            ),
         ),
         migrations.AlterField(
-            model_name='cashdesksession',
-            name='cash_before',
-            field=models.DecimalField(decimal_places=2, max_digits=10, verbose_name='Cash in drawer before session'),
+            model_name="cashdesksession",
+            name="cash_before",
+            field=models.DecimalField(
+                decimal_places=2,
+                max_digits=10,
+                verbose_name="Cash in drawer before session",
+            ),
         ),
         migrations.AlterField(
-            model_name='cashdesksession',
-            name='end',
-            field=models.DateTimeField(blank=True, help_text='Only set if session has ended', null=True, verbose_name='End of session'),
+            model_name="cashdesksession",
+            name="end",
+            field=models.DateTimeField(
+                blank=True,
+                help_text="Only set if session has ended",
+                null=True,
+                verbose_name="End of session",
+            ),
         ),
         migrations.AlterField(
-            model_name='cashdesksession',
-            name='items',
-            field=models.ManyToManyField(blank=True, through='core.CashdeskSessionItem', to='core.Item'),
+            model_name="cashdesksession",
+            name="items",
+            field=models.ManyToManyField(
+                blank=True, through="core.CashdeskSessionItem", to="core.Item"
+            ),
         ),
         migrations.AlterField(
-            model_name='cashdesksession',
-            name='start',
-            field=models.DateTimeField(blank=True, help_text='Automatically set on first login', null=True, verbose_name='Start of session'),
+            model_name="cashdesksession",
+            name="start",
+            field=models.DateTimeField(
+                blank=True,
+                help_text="Automatically set on first login",
+                null=True,
+                verbose_name="Start of session",
+            ),
         ),
         migrations.AlterField(
-            model_name='cashdesksessionitem',
-            name='amount_after',
+            model_name="cashdesksessionitem",
+            name="amount_after",
             field=models.PositiveIntegerField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name='listconstraint',
-            name='products',
-            field=models.ManyToManyField(blank=True, to='core.Product', verbose_name='Affected products'),
+            model_name="listconstraint",
+            name="products",
+            field=models.ManyToManyField(
+                blank=True, to="core.Product", verbose_name="Affected products"
+            ),
         ),
         migrations.AlterField(
-            model_name='product',
-            name='items',
-            field=models.ManyToManyField(blank=True, through='core.ProductItem', to='core.Item'),
+            model_name="product",
+            name="items",
+            field=models.ManyToManyField(
+                blank=True, through="core.ProductItem", to="core.Item"
+            ),
         ),
         migrations.AlterField(
-            model_name='product',
-            name='tax_rate',
-            field=models.DecimalField(decimal_places=2, help_text='in percent', max_digits=4, verbose_name='Tax rate'),
+            model_name="product",
+            name="tax_rate",
+            field=models.DecimalField(
+                decimal_places=2,
+                help_text="in percent",
+                max_digits=4,
+                verbose_name="Tax rate",
+            ),
         ),
         migrations.AlterField(
-            model_name='quota',
-            name='products',
-            field=models.ManyToManyField(blank=True, to='core.Product', verbose_name='Affected products'),
+            model_name="quota",
+            name="products",
+            field=models.ManyToManyField(
+                blank=True, to="core.Product", verbose_name="Affected products"
+            ),
         ),
         migrations.AlterField(
-            model_name='timeconstraint',
-            name='end',
-            field=models.DateTimeField(blank=True, null=True, verbose_name='Not available after'),
+            model_name="timeconstraint",
+            name="end",
+            field=models.DateTimeField(
+                blank=True, null=True, verbose_name="Not available after"
+            ),
         ),
         migrations.AlterField(
-            model_name='timeconstraint',
-            name='products',
-            field=models.ManyToManyField(blank=True, to='core.Product', verbose_name='Affected products'),
+            model_name="timeconstraint",
+            name="products",
+            field=models.ManyToManyField(
+                blank=True, to="core.Product", verbose_name="Affected products"
+            ),
         ),
         migrations.AlterField(
-            model_name='timeconstraint',
-            name='start',
-            field=models.DateTimeField(blank=True, null=True, verbose_name='Not available before'),
+            model_name="timeconstraint",
+            name="start",
+            field=models.DateTimeField(
+                blank=True, null=True, verbose_name="Not available before"
+            ),
         ),
         migrations.AlterField(
-            model_name='transactionposition',
-            name='items',
-            field=models.ManyToManyField(blank=True, through='core.TransactionPositionItem', to='core.Item'),
+            model_name="transactionposition",
+            name="items",
+            field=models.ManyToManyField(
+                blank=True, through="core.TransactionPositionItem", to="core.Item"
+            ),
         ),
     ]

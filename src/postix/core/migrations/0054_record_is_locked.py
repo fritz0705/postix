@@ -5,14 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0053_auto_20181103_1618'),
-    ]
+    dependencies = [("core", "0053_auto_20181103_1618")]
 
     operations = [
         migrations.AddField(
-            model_name='record',
-            name='is_locked',
+            model_name="record",
+            name="is_locked",
             field=models.BooleanField(default=False),
-        ),
+        )
     ]

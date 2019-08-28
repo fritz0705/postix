@@ -17,7 +17,7 @@ def generate_ping(cashdesk: Cashdesk) -> None:
 
 
 def generate_ping_secret():
-    prefix = '/ping '
+    prefix = "/ping "
     return prefix + get_random_string(length=MAX_LENGTH - len(prefix))
 
 
@@ -57,18 +57,18 @@ class Ping(models.Model):
             return
 
         url = settings.queue_sync_url
-        if not url.endswith('/'):
-            url += '/'
-        url += 'pong'
-        fmt = '%Y-%m-%d %H:%M:%S'
+        if not url.endswith("/"):
+            url += "/"
+        url += "pong"
+        fmt = "%Y-%m-%d %H:%M:%S"
         response = requests.post(
             url,
-            headers={'Authorization': settings.queue_sync_token},
-            data={'ping': self.pinged.strftime(fmt), 'pong': self.ponged.strftime(fmt)},
+            headers={"Authorization": settings.queue_sync_token},
+            data={"ping": self.pinged.strftime(fmt), "pong": self.ponged.strftime(fmt)},
         )
         if response.status_code != 201:
             raise Exception(
-                'Received non-201 status response from {}: {}'.format(
+                "Received non-201 status response from {}: {}".format(
                     url, response.status_code
                 )
             )

@@ -5,24 +5,32 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0058_auto_20181223_2219'),
-    ]
+    dependencies = [("core", "0058_auto_20181223_2219")]
 
     operations = [
         migrations.AddField(
-            model_name='itemsupplypacklog',
-            name='datetime',
+            model_name="itemsupplypacklog",
+            name="datetime",
             field=models.DateTimeField(auto_now_add=True, null=True),
         ),
         migrations.AlterField(
-            model_name='cashdesk',
-            name='printer_handles_drawer',
-            field=models.BooleanField(default=True, help_text='Unset if the printer or drawer are broken.', verbose_name='Printer handles drawer'),
+            model_name="cashdesk",
+            name="printer_handles_drawer",
+            field=models.BooleanField(
+                default=True,
+                help_text="Unset if the printer or drawer are broken.",
+                verbose_name="Printer handles drawer",
+            ),
         ),
         migrations.AlterField(
-            model_name='cashdesk',
-            name='printer_queue_name',
-            field=models.CharField(blank=True, help_text='The name configured in CUPS', max_length=254, null=True, verbose_name='Printer queue name'),
+            model_name="cashdesk",
+            name="printer_queue_name",
+            field=models.CharField(
+                blank=True,
+                help_text="The name configured in CUPS",
+                max_length=254,
+                null=True,
+                verbose_name="Printer queue name",
+            ),
         ),
     ]

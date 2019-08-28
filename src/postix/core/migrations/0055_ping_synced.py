@@ -5,14 +5,10 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0054_record_is_locked'),
-    ]
+    dependencies = [("core", "0054_record_is_locked")]
 
     operations = [
         migrations.AddField(
-            model_name='ping',
-            name='synced',
-            field=models.BooleanField(default=False),
-        ),
+            model_name="ping", name="synced", field=models.BooleanField(default=False)
+        )
     ]

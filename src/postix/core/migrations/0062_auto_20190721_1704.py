@@ -5,25 +5,19 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0061_asset_assetposition'),
-    ]
+    dependencies = [("core", "0061_asset_assetposition")]
 
     operations = [
         migrations.AddField(
-            model_name='asset',
-            name='description',
-            field=models.CharField(default='', max_length=190),
+            model_name="asset",
+            name="description",
+            field=models.CharField(default="", max_length=190),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='asset',
-            name='last_seen',
-            field=models.DateTimeField(),
+            model_name="asset", name="last_seen", field=models.DateTimeField()
         ),
         migrations.AlterField(
-            model_name='assetposition',
-            name='start',
-            field=models.DateTimeField(),
+            model_name="assetposition", name="start", field=models.DateTimeField()
         ),
     ]

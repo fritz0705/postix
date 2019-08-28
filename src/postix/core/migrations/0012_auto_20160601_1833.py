@@ -10,38 +10,59 @@ from django.utils.timezone import utc
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0011_auto_20160208_2309'),
-    ]
+    dependencies = [("core", "0011_auto_20160208_2309")]
 
     operations = [
         migrations.CreateModel(
-            name='ItemMovement',
+            name="ItemMovement",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('amount', models.IntegerField(help_text='Negative values indicate that items were taken out of a session. Mostly used when counting items after ending a session.')),
-                ('timestamp', models.DateTimeField(default=datetime.datetime(2016, 6, 1, 16, 33, 36, 473964, tzinfo=utc), editable=False)),
-                ('item', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='item_movements', to='core.Item', verbose_name='Item moved to/from this session')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "amount",
+                    models.IntegerField(
+                        help_text="Negative values indicate that items were taken out of a session. Mostly used when counting items after ending a session."
+                    ),
+                ),
+                (
+                    "timestamp",
+                    models.DateTimeField(
+                        default=datetime.datetime(
+                            2016, 6, 1, 16, 33, 36, 473964, tzinfo=utc
+                        ),
+                        editable=False,
+                    ),
+                ),
+                (
+                    "item",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="item_movements",
+                        to="core.Item",
+                        verbose_name="Item moved to/from this session",
+                    ),
+                ),
             ],
         ),
-        migrations.RemoveField(
-            model_name='cashdesksessionitem',
-            name='item',
-        ),
-        migrations.RemoveField(
-            model_name='cashdesksessionitem',
-            name='session',
-        ),
-        migrations.RemoveField(
-            model_name='cashdesksession',
-            name='items',
-        ),
-        migrations.DeleteModel(
-            name='CashdeskSessionItem',
-        ),
+        migrations.RemoveField(model_name="cashdesksessionitem", name="item"),
+        migrations.RemoveField(model_name="cashdesksessionitem", name="session"),
+        migrations.RemoveField(model_name="cashdesksession", name="items"),
+        migrations.DeleteModel(name="CashdeskSessionItem"),
         migrations.AddField(
-            model_name='itemmovement',
-            name='session',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='item_movements', to='core.CashdeskSession', verbose_name='Session the item was involved in'),
+            model_name="itemmovement",
+            name="session",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="item_movements",
+                to="core.CashdeskSession",
+                verbose_name="Session the item was involved in",
+            ),
         ),
     ]

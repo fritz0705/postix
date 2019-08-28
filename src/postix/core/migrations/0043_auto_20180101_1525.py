@@ -7,13 +7,10 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0042_auto_20171225_0024'),
-    ]
+    dependencies = [("core", "0042_auto_20171225_0024")]
 
     operations = [
         migrations.AlterModelOptions(
-            name='itemmovement',
-            options={'ordering': ('timestamp',)},
-        ),
+            name="itemmovement", options={"ordering": ("timestamp",)}
+        )
     ]

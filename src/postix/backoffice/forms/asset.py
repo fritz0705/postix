@@ -11,31 +11,23 @@ class AssetForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
-        self.helper.layout = Layout(
-            'asset_type',
-            'description',
-            'identifier'
-        )
+        self.helper.layout = Layout("asset_type", "description", "identifier")
 
     class Meta:
         model = Asset
-        fields = '__all__'
+        fields = "__all__"
 
 
 class AssetMoveForm(forms.Form):
-    identifier = forms.CharField(label=_('QR code'), max_length=190, required=True)
-    location = forms.CharField(label=_('Location'), max_length=190, required=False)
-    comment = forms.CharField(label=_('Comment'), max_length=190, required=False)
+    identifier = forms.CharField(label=_("QR code"), max_length=190, required=True)
+    location = forms.CharField(label=_("Location"), max_length=190, required=False)
+    comment = forms.CharField(label=_("Comment"), max_length=190, required=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
-        self.helper.layout = Layout(
-            'location',
-            'comment',
-            'identifier'
-        )
+        self.helper.layout = Layout("location", "comment", "identifier")
 
 
 class AssetHistoryForm(forms.ModelForm):
@@ -46,4 +38,4 @@ class AssetHistoryForm(forms.ModelForm):
 
     class Meta:
         model = AssetPosition
-        fields = '__all__'
+        fields = "__all__"

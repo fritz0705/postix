@@ -6,11 +6,11 @@ from postix.core.models import Cashdesk
 
 
 def get_ip_address(request: HttpRequest) -> str:
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
     if x_forwarded_for:
-        return x_forwarded_for.split(',')[0]
+        return x_forwarded_for.split(",")[0]
     else:
-        return request.META.get('REMOTE_ADDR')
+        return request.META.get("REMOTE_ADDR")
 
 
 def detect_cashdesk(request: HttpRequest) -> Union[Cashdesk, None]:

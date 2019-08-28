@@ -8,9 +8,8 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0027_eventsettings_initialized'),
-        ('core', '0027_transactionposition_has_constraint_bypass'),
+        ("core", "0027_eventsettings_initialized"),
+        ("core", "0027_transactionposition_has_constraint_bypass"),
     ]
 
-    operations = [
-    ]
+    operations = []

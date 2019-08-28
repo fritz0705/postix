@@ -46,13 +46,13 @@ def sample_member_file_incremental_update_ccc():
 
 @pytest.mark.django_db
 def test_member_import_ccc(sample_member_file_ccc):
-    call_command('import_member', sample_member_file_ccc)
-    lc = ListConstraint.objects.get(confidential=True, name='Mitglieder')
+    call_command("import_member", sample_member_file_ccc)
+    lc = ListConstraint.objects.get(confidential=True, name="Mitglieder")
     assert set((e.identifier, e.name) for e in lc.entries.all()) == {
-        ('2', ' '),
-        ('5', 'C D'),
-        ('8', 'E F'),
-        ('23', 'K L'),
+        ("2", " "),
+        ("5", "C D"),
+        ("8", "E F"),
+        ("23", "K L"),
     }
 
 
@@ -60,17 +60,17 @@ def test_member_import_ccc(sample_member_file_ccc):
 def test_member_import_ccc_update(
     sample_member_file_ccc, sample_member_file_incremental_update_ccc
 ):
-    call_command('import_member', sample_member_file_ccc)
-    lc = ListConstraint.objects.get(confidential=True, name='Mitglieder')
-    call_command('import_member', sample_member_file_incremental_update_ccc)
+    call_command("import_member", sample_member_file_ccc)
+    lc = ListConstraint.objects.get(confidential=True, name="Mitglieder")
+    call_command("import_member", sample_member_file_incremental_update_ccc)
     assert set((e.identifier, e.name) for e in lc.entries.all()) == {
-        ('2', ' '),
+        ("2", " "),
         (
-            '5',
-            'C D',
+            "5",
+            "C D",
         ),  # got removed from the file, but we don't detect that so we can apply partial lists as well
-        ('8', 'E Y'),  # name changed :)
-        ('42', 'M N'),
+        ("8", "E Y"),  # name changed :)
+        ("42", "M N"),
     }
 
 
@@ -89,9 +89,9 @@ def sample_member_file_local():
 
 @pytest.mark.django_db
 def test_member_import_local(sample_member_file_local):
-    call_command('import_member', sample_member_file_local, prefix='BLN')
-    lc = ListConstraint.objects.get(confidential=True, name='Mitglieder')
+    call_command("import_member", sample_member_file_local, prefix="BLN")
+    lc = ListConstraint.objects.get(confidential=True, name="Mitglieder")
     assert set((e.identifier, e.name) for e in lc.entries.all()) == {
-        ('BLN-1', 'foo'),
-        ('BLN-2', 'bar'),
+        ("BLN-1", "foo"),
+        ("BLN-2", "bar"),
     }

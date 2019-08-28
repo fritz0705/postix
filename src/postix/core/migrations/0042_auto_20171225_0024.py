@@ -11,37 +11,76 @@ import django.utils.timezone
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0041_item_is_receipt'),
-    ]
+    dependencies = [("core", "0041_item_is_receipt")]
 
     operations = [
         migrations.CreateModel(
-            name='CashMovement',
+            name="CashMovement",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('cash', models.DecimalField(decimal_places=2, default=Decimal('0.00'), max_digits=10, verbose_name='Cash moved. Negative means taking it out of the session.')),
-                ('timestamp', models.DateTimeField(default=django.utils.timezone.now, editable=False)),
-                ('backoffice_user', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='supervised_cash_movements', to=settings.AUTH_USER_MODEL, verbose_name='Backoffice operator issuing movement')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "cash",
+                    models.DecimalField(
+                        decimal_places=2,
+                        default=Decimal("0.00"),
+                        max_digits=10,
+                        verbose_name="Cash moved. Negative means taking it out of the session.",
+                    ),
+                ),
+                (
+                    "timestamp",
+                    models.DateTimeField(
+                        default=django.utils.timezone.now, editable=False
+                    ),
+                ),
+                (
+                    "backoffice_user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="supervised_cash_movements",
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="Backoffice operator issuing movement",
+                    ),
+                ),
             ],
         ),
-        migrations.RemoveField(
-            model_name='cashdesksession',
-            name='cash_before',
+        migrations.RemoveField(model_name="cashdesksession", name="cash_before"),
+        migrations.AlterField(
+            model_name="cashdesk",
+            name="printer_handles_drawer",
+            field=models.BooleanField(
+                default=True,
+                help_text="Ausschalten, wenn Drucker oder Schublade kaputt sind",
+                verbose_name="Drucker steuert Schublade",
+            ),
         ),
         migrations.AlterField(
-            model_name='cashdesk',
-            name='printer_handles_drawer',
-            field=models.BooleanField(default=True, help_text='Ausschalten, wenn Drucker oder Schublade kaputt sind', verbose_name='Drucker steuert Schublade'),
-        ),
-        migrations.AlterField(
-            model_name='cashdesk',
-            name='printer_queue_name',
-            field=models.CharField(blank=True, help_text='Der Name, der im CUPS konfiguriert wurde', max_length=254, null=True, verbose_name='Drucker-Name'),
+            model_name="cashdesk",
+            name="printer_queue_name",
+            field=models.CharField(
+                blank=True,
+                help_text="Der Name, der im CUPS konfiguriert wurde",
+                max_length=254,
+                null=True,
+                verbose_name="Drucker-Name",
+            ),
         ),
         migrations.AddField(
-            model_name='cashmovement',
-            name='session',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='cash_movements', to='core.CashdeskSession', verbose_name='Session the item was involved in'),
+            model_name="cashmovement",
+            name="session",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="cash_movements",
+                to="core.CashdeskSession",
+                verbose_name="Session the item was involved in",
+            ),
         ),
     ]

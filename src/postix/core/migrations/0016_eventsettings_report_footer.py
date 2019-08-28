@@ -7,14 +7,16 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0015_eventsettings'),
-    ]
+    dependencies = [("core", "0015_eventsettings")]
 
     operations = [
         migrations.AddField(
-            model_name='eventsettings',
-            name='report_footer',
-            field=models.CharField(default='CCCV Veransstaltungsgesellschaft mbH', help_text='This will show up on backoffice session reports.', max_length=500),
-        ),
+            model_name="eventsettings",
+            name="report_footer",
+            field=models.CharField(
+                default="CCCV Veransstaltungsgesellschaft mbH",
+                help_text="This will show up on backoffice session reports.",
+                max_length=500,
+            ),
+        )
     ]

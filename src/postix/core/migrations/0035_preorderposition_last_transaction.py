@@ -7,14 +7,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0034_auto_20161226_1811'),
-    ]
+    dependencies = [("core", "0034_auto_20161226_1811")]
 
     operations = [
         migrations.AddField(
-            model_name='preorderposition',
-            name='last_transaction',
+            model_name="preorderposition",
+            name="last_transaction",
             field=models.IntegerField(blank=True, null=True),
-        ),
+        )
     ]

@@ -5,19 +5,17 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0057_itemsupplypack_itemsupplypacklog'),
-    ]
+    dependencies = [("core", "0057_itemsupplypack_itemsupplypacklog")]
 
     operations = [
         migrations.AddField(
-            model_name='record',
-            name='data',
+            model_name="record",
+            name="data",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name='cashdesk',
-            name='handles_items',
-            field=models.BooleanField(default=True, verbose_name='Handles items'),
+            model_name="cashdesk",
+            name="handles_items",
+            field=models.BooleanField(default=True, verbose_name="Handles items"),
         ),
     ]

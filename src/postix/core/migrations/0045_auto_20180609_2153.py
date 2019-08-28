@@ -7,14 +7,10 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0044_auto_20180609_2127'),
-    ]
+    dependencies = [("core", "0044_auto_20180609_2127")]
 
     operations = [
         migrations.AlterField(
-            model_name='record',
-            name='datetime',
-            field=models.DateTimeField(),
-        ),
+            model_name="record", name="datetime", field=models.DateTimeField()
+        )
     ]

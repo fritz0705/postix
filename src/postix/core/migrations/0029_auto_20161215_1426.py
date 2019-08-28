@@ -8,20 +8,18 @@ import django.db.models.manager
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0028_merge'),
-    ]
+    dependencies = [("core", "0028_merge")]
 
     operations = [
         migrations.AlterModelManagers(
-            name='cashdesksession',
-            managers=[
-                ('active', django.db.models.manager.Manager()),
-            ],
+            name="cashdesksession",
+            managers=[("active", django.db.models.manager.Manager())],
         ),
         migrations.AddField(
-            model_name='product',
-            name='import_source_id',
-            field=models.CharField(blank=True, db_index=True, max_length=180, null=True),
+            model_name="product",
+            name="import_source_id",
+            field=models.CharField(
+                blank=True, db_index=True, max_length=180, null=True
+            ),
         ),
     ]

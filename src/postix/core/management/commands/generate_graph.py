@@ -24,15 +24,15 @@ def opensessions(x, sessions, dt):
             tzinfo=tz,
         ),
     )
-    op = set([s['cashdesk'] for s in sessions if s['start'] <= dt and s['end'] >= dt])
+    op = set([s["cashdesk"] for s in sessions if s["start"] <= dt and s["end"] >= dt])
     return len(op)
 
 
 class Command(BaseCommand):
-    help = 'Generate time graphs'
+    help = "Generate time graphs"
 
     def add_arguments(self, parser):
-        parser.add_argument('--ignore-sessions')
+        parser.add_argument("--ignore-sessions")
 
     def handle(self, *args, **kwargs):
         tz = get_current_timezone()
@@ -40,12 +40,12 @@ class Command(BaseCommand):
             CashdeskSession.objects.exclude(cashdesk__name__icontains="handkasse")
             .exclude(cashdesk__handles_items=False)
             .exclude(
-                id__in=[int(a) for a in kwargs.get('ignore_sessions', '').split(',')]
+                id__in=[int(a) for a in kwargs.get("ignore_sessions", "").split(",")]
             )
-            .values('id', 'start', 'end', 'cashdesk')
+            .values("id", "start", "end", "cashdesk")
         )
-        firststart = CashdeskSession.objects.order_by('start').first().start.date()
-        lastend = CashdeskSession.objects.order_by('-end').first().end.date()
+        firststart = CashdeskSession.objects.order_by("start").first().start.date()
+        lastend = CashdeskSession.objects.order_by("-end").first().end.date()
         days = (lastend - firststart).days + 1
 
         fig, axs = plt.subplots(
@@ -59,44 +59,44 @@ class Command(BaseCommand):
             d = TransactionPosition.objects.filter(
                 transaction__datetime__lt=firststart + timedelta(days=i + 1),
                 transaction__datetime__gt=firststart + timedelta(days=i),
-            ).values('transaction__datetime', 'preorder_position')
+            ).values("transaction__datetime", "preorder_position")
             sp.hist(
                 [
                     [
-                        dtf(p['transaction__datetime'].astimezone(tz))
+                        dtf(p["transaction__datetime"].astimezone(tz))
                         for p in d
-                        if p['preorder_position']
+                        if p["preorder_position"]
                     ],
                     [
-                        dtf(p['transaction__datetime'].astimezone(tz))
+                        dtf(p["transaction__datetime"].astimezone(tz))
                         for p in d
-                        if not p['preorder_position']
+                        if not p["preorder_position"]
                     ],
                 ],
-                label=['Presale transactions', 'Cash transactions'],
+                label=["Presale transactions", "Cash transactions"],
                 bins=np.arange(0, 24.5, 0.5),
-                histtype='barstacked',
+                histtype="barstacked",
             )
             sp.set_title(day.strftime("%Y-%m-%d"))
             ax2 = sp.twinx()
             ax2.plot(
                 x,
                 [opensessions(x, sessions, firststart + timedelta(days=i)) for x in x],
-                label='Open cashdesks',
-                color='r',
+                label="Open cashdesks",
+                color="r",
             )
             ax2.set_ylim(0, 8)
             if i == 0:
-                ax2.legend(loc='upper left')
+                ax2.legend(loc="upper left")
             elif i == 3:
-                ax2.set_ylabel('Open cashdesks')
+                ax2.set_ylabel("Open cashdesks")
             sp.set_xlim(0, 24)
             sp.set_xticks(range(0, 25, 2))
 
-        axs[1, 1].legend(loc='upper left')
-        axs[1, 0].set_ylabel(u'Number of Transactions per 30 minutes')
-        axs[2, 0].set_xlabel(u'Time of day')
+        axs[1, 1].legend(loc="upper left")
+        axs[1, 0].set_ylabel(u"Number of Transactions per 30 minutes")
+        axs[2, 0].set_xlabel(u"Time of day")
         fig.tight_layout()
-        fig.suptitle('Cashdesk transactions 35c3')
-        plt.savefig('transactions.svg')
-        plt.savefig('transactions.png')
+        fig.suptitle("Cashdesk transactions 35c3")
+        plt.savefig("transactions.svg")
+        plt.savefig("transactions.png")

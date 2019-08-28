@@ -8,18 +8,30 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0029_auto_20161215_1426'),
-    ]
+    dependencies = [("core", "0029_auto_20161215_1426")]
 
     operations = [
         migrations.CreateModel(
-            name='Ping',
+            name="Ping",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('pinged', models.DateTimeField(auto_now_add=True)),
-                ('ponged', models.DateTimeField(blank=True, null=True)),
-                ('secret', models.CharField(default=postix.core.models.ping.generate_ping_secret, max_length=20)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("pinged", models.DateTimeField(auto_now_add=True)),
+                ("ponged", models.DateTimeField(blank=True, null=True)),
+                (
+                    "secret",
+                    models.CharField(
+                        default=postix.core.models.ping.generate_ping_secret,
+                        max_length=20,
+                    ),
+                ),
             ],
-        ),
+        )
     ]

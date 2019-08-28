@@ -10,25 +10,35 @@ import django.utils.timezone
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0012_auto_20160601_1833'),
-    ]
+    dependencies = [("core", "0012_auto_20160601_1833")]
 
     operations = [
         migrations.AddField(
-            model_name='itemmovement',
-            name='backoffice_user',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.PROTECT, related_name='supervised_item_movements', to=settings.AUTH_USER_MODEL, verbose_name='Backoffice operator issuing movement'),
+            model_name="itemmovement",
+            name="backoffice_user",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="supervised_item_movements",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Backoffice operator issuing movement",
+            ),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='cashdesksession',
-            name='cashdesk',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='sessions', to='core.Cashdesk'),
+            model_name="cashdesksession",
+            name="cashdesk",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="sessions",
+                to="core.Cashdesk",
+            ),
         ),
         migrations.AlterField(
-            model_name='itemmovement',
-            name='timestamp',
-            field=models.DateTimeField(default=django.utils.timezone.now, editable=False),
+            model_name="itemmovement",
+            name="timestamp",
+            field=models.DateTimeField(
+                default=django.utils.timezone.now, editable=False
+            ),
         ),
     ]

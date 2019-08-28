@@ -7,20 +7,20 @@ from ...factories import user_factory
 
 @pytest.mark.django_db
 def test_create_user():
-    u = User.objects.create_user('foo', 'bar')
+    u = User.objects.create_user("foo", "bar")
     assert u.pk
-    assert u.username == 'foo'
-    assert u.check_password('bar')
+    assert u.username == "foo"
+    assert u.check_password("bar")
     assert not u.is_superuser
     assert not u.is_troubleshooter
 
 
 @pytest.mark.django_db
 def test_create_superuser():
-    u = User.objects.create_superuser('foo', 'bar')
+    u = User.objects.create_superuser("foo", "bar")
     assert u.pk
-    assert u.username == 'foo'
-    assert u.check_password('bar')
+    assert u.username == "foo"
+    assert u.check_password("bar")
     assert u.is_superuser
     assert u.is_troubleshooter
 

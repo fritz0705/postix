@@ -7,14 +7,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0021_transaction_receipt_id'),
-    ]
+    dependencies = [("core", "0021_transaction_receipt_id")]
 
     operations = [
         migrations.AddField(
-            model_name='listconstraint',
-            name='confidential',
+            model_name="listconstraint",
+            name="confidential",
             field=models.BooleanField(default=False),
-        ),
+        )
     ]

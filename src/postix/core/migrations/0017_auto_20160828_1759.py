@@ -9,29 +9,46 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0016_eventsettings_report_footer'),
-    ]
+    dependencies = [("core", "0016_eventsettings_report_footer")]
 
     operations = [
         migrations.AlterField(
-            model_name='eventsettings',
-            name='report_footer',
-            field=models.CharField(default='CCC Veranstaltungsgesellschaft mbH', help_text='This will show up on backoffice session reports.', max_length=500),
+            model_name="eventsettings",
+            name="report_footer",
+            field=models.CharField(
+                default="CCC Veranstaltungsgesellschaft mbH",
+                help_text="This will show up on backoffice session reports.",
+                max_length=500,
+            ),
         ),
         migrations.AlterField(
-            model_name='listconstraintproduct',
-            name='tax_rate',
-            field=models.DecimalField(decimal_places=2, default=Decimal('0.00'), max_digits=5, validators=[django.core.validators.MinValueValidator(Decimal('0.00'))]),
+            model_name="listconstraintproduct",
+            name="tax_rate",
+            field=models.DecimalField(
+                decimal_places=2,
+                default=Decimal("0.00"),
+                max_digits=5,
+                validators=[django.core.validators.MinValueValidator(Decimal("0.00"))],
+            ),
         ),
         migrations.AlterField(
-            model_name='product',
-            name='tax_rate',
-            field=models.DecimalField(decimal_places=2, help_text='in percent', max_digits=4, validators=[django.core.validators.MinValueValidator(Decimal('0.00'))], verbose_name='Tax rate'),
+            model_name="product",
+            name="tax_rate",
+            field=models.DecimalField(
+                decimal_places=2,
+                help_text="in percent",
+                max_digits=4,
+                validators=[django.core.validators.MinValueValidator(Decimal("0.00"))],
+                verbose_name="Tax rate",
+            ),
         ),
         migrations.AlterField(
-            model_name='transactionposition',
-            name='tax_rate',
-            field=models.DecimalField(decimal_places=2, max_digits=4, validators=[django.core.validators.MinValueValidator(Decimal('0.00'))]),
+            model_name="transactionposition",
+            name="tax_rate",
+            field=models.DecimalField(
+                decimal_places=2,
+                max_digits=4,
+                validators=[django.core.validators.MinValueValidator(Decimal("0.00"))],
+            ),
         ),
     ]

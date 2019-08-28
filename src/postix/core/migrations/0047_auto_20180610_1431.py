@@ -7,13 +7,8 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0046_auto_20180610_1405'),
-    ]
+    dependencies = [("core", "0046_auto_20180610_1405")]
 
     operations = [
-        migrations.AlterModelOptions(
-            name='record',
-            options={'ordering': ('datetime',)},
-        ),
+        migrations.AlterModelOptions(name="record", options={"ordering": ("datetime",)})
     ]

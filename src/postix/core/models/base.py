@@ -17,7 +17,7 @@ class Transaction(models.Model):
     datetime = models.DateTimeField(auto_now_add=True)
     cash_given = models.DecimalField(null=True, max_digits=10, decimal_places=2)
     session = models.ForeignKey(
-        'CashdeskSession', related_name='transactions', on_delete=models.PROTECT
+        "CashdeskSession", related_name="transactions", on_delete=models.PROTECT
     )
     receipt_id = models.PositiveIntegerField(null=True, blank=True, unique=True)
 
@@ -26,7 +26,7 @@ class Transaction(models.Model):
 
     @property
     def value(self) -> Decimal:
-        return self.positions.aggregate(result=Sum('value'))['result']
+        return self.positions.aggregate(result=Sum("value"))["result"]
 
     @property
     def has_reversed_positions(self) -> bool:
@@ -34,7 +34,7 @@ class Transaction(models.Model):
 
     @property
     def has_reversals(self) -> bool:
-        return self.positions.filter(type='reverse').exists()
+        return self.positions.filter(type="reverse").exists()
 
     @property
     def can_be_reversed(self) -> bool:
@@ -46,18 +46,18 @@ class Transaction(models.Model):
 
     def get_invoice_path(self, allow_nonexistent: bool = False) -> Union[str, None]:
         if self.receipt_id:
-            base = default_storage.path('invoices')
-            path = os.path.join(base, 'invoice_{:04d}.pdf'.format(self.receipt_id))
+            base = default_storage.path("invoices")
+            path = os.path.join(base, "invoice_{:04d}.pdf".format(self.receipt_id))
             if allow_nonexistent or os.path.exists(path):
                 return path
-        return ''
+        return ""
 
     def set_receipt_id(self, retry: int = 0) -> None:
         try:
             self.receipt_id = 1 + (
-                Transaction.objects.aggregate(m=Max('receipt_id'))['m'] or 0
+                Transaction.objects.aggregate(m=Max("receipt_id"))["m"] or 0
             )
-            self.save(update_fields=['receipt_id'])
+            self.save(update_fields=["receipt_id"])
         except Exception as e:
             if retry > 0:
                 self.set_receipt_id(retry=retry - 1)
@@ -67,53 +67,53 @@ class Transaction(models.Model):
 
 class TransactionPosition(models.Model):
     TYPES = (
-        ('redeem', 'Presale redemption'),
-        ('reverse', 'Reversal'),
-        ('sell', 'Sale'),
+        ("redeem", "Presale redemption"),
+        ("reverse", "Reversal"),
+        ("sell", "Sale"),
     )
 
     transaction = models.ForeignKey(
-        'Transaction', related_name='positions', on_delete=models.PROTECT
+        "Transaction", related_name="positions", on_delete=models.PROTECT
     )
     type = models.CharField(choices=TYPES, max_length=100)
     value = models.DecimalField(max_digits=10, decimal_places=2)
     tax_rate = models.DecimalField(
-        max_digits=4, decimal_places=2, validators=[MinValueValidator(Decimal('0.00'))]
+        max_digits=4, decimal_places=2, validators=[MinValueValidator(Decimal("0.00"))]
     )
     tax_value = models.DecimalField(max_digits=10, decimal_places=2)
     product = models.ForeignKey(
-        'Product', related_name='positions', on_delete=models.PROTECT
+        "Product", related_name="positions", on_delete=models.PROTECT
     )
     reverses = models.ForeignKey(
-        'TransactionPosition',
-        related_name='reversed_by',
+        "TransactionPosition",
+        related_name="reversed_by",
         on_delete=models.PROTECT,
         null=True,
         blank=True,
     )
     listentry = models.ForeignKey(
-        'ListConstraintEntry',
-        related_name='positions',
+        "ListConstraintEntry",
+        related_name="positions",
         on_delete=models.PROTECT,
         null=True,
         blank=True,
     )
     preorder_position = models.ForeignKey(
-        'PreorderPosition',
-        related_name='transaction_positions',
+        "PreorderPosition",
+        related_name="transaction_positions",
         on_delete=models.PROTECT,
         null=True,
         blank=True,
     )
     items = models.ManyToManyField(
-        'Item', through='TransactionPositionItem', blank=True
+        "Item", through="TransactionPositionItem", blank=True
     )
     authorized_by = models.ForeignKey(
-        'User',
+        "User",
         null=True,
         blank=True,
         on_delete=models.PROTECT,
-        related_name='authorized',
+        related_name="authorized",
     )
     has_constraint_bypass = models.BooleanField(default=False)
 
@@ -122,7 +122,7 @@ class TransactionPosition(models.Model):
         self.tax_value = round_decimal(self.value - net_value)
 
     def save(self, *args, **kwargs) -> None:
-        if self.type == 'reverse':
+        if self.type == "reverse":
             self.product = self.reverses.product
             if self.value is None:
                 self.value = -self.reverses.value
@@ -136,17 +136,17 @@ class TransactionPosition(models.Model):
         super(TransactionPosition, self).save(*args, **kwargs)
 
         if not self.items.exists():
-            for pi in self.product.product_items.all().select_related('item'):
+            for pi in self.product.product_items.all().select_related("item"):
                 TransactionPositionItem.objects.create(
                     position=self, item=pi.item, amount=pi.amount
                 )
 
     def was_reversed(self) -> bool:
-        if self.type == 'reverse':
+        if self.type == "reverse":
             return False
 
         return TransactionPosition.objects.filter(
-            reverses=self, type='reverse'
+            reverses=self, type="reverse"
         ).exists()
 
 
@@ -157,18 +157,18 @@ class Product(models.Model):
     tax_rate = models.DecimalField(
         max_digits=4,
         decimal_places=2,
-        verbose_name='Tax rate',
-        help_text='in percent',
-        validators=[MinValueValidator(Decimal('0.00'))],
+        verbose_name="Tax rate",
+        help_text="in percent",
+        validators=[MinValueValidator(Decimal("0.00"))],
     )
     is_visible = models.BooleanField(default=True)
     is_admission = models.BooleanField(default=False)
     requires_authorization = models.BooleanField(default=False)
-    items = models.ManyToManyField('Item', through='ProductItem', blank=True)
+    items = models.ManyToManyField("Item", through="ProductItem", blank=True)
     priority = models.IntegerField(
         default=0,
-        verbose_name='Priority',
-        help_text='Will be used for sorting, high priorities come first.',
+        verbose_name="Priority",
+        help_text="Will be used for sorting, high priorities come first.",
     )
     import_source_id = models.CharField(
         max_length=180, db_index=True, null=True, blank=True
@@ -206,9 +206,9 @@ class Product(models.Model):
 
     @cached_property
     def amount_sold(self) -> int:
-        positive = self.positions.filter(type='sell').count()
+        positive = self.positions.filter(type="sell").count()
         negative = (
-            self.positions.filter(type='reverse')
+            self.positions.filter(type="reverse")
             .exclude(preorder_position__isnull=False)
             .count()
         )
@@ -216,9 +216,9 @@ class Product(models.Model):
 
     @cached_property
     def amount_redeemed(self) -> int:
-        positive = self.positions.filter(type='redeem').count()
+        positive = self.positions.filter(type="redeem").count()
         negative = (
-            self.positions.filter(type='reverse')
+            self.positions.filter(type="reverse")
             .exclude(preorder_position__isnull=True)
             .count()
         )
@@ -243,7 +243,7 @@ class Product(models.Model):
         return self.name
 
     class Meta:
-        ordering = ('-priority', 'pk')
+        ordering = ("-priority", "pk")
 
 
 class Item(models.Model):
@@ -257,9 +257,9 @@ class Item(models.Model):
 
     @cached_property
     def amount_sold(self) -> int:
-        positive = self.transaction_position_items.filter(position__type='sell').count()
+        positive = self.transaction_position_items.filter(position__type="sell").count()
         negative = (
-            self.transaction_position_items.filter(position__type='reverse')
+            self.transaction_position_items.filter(position__type="reverse")
             .exclude(position__preorder_position__isnull=False)
             .count()
         )
@@ -268,10 +268,10 @@ class Item(models.Model):
     @cached_property
     def amount_redeemed(self) -> int:
         positive = self.transaction_position_items.filter(
-            position__type='redeem'
+            position__type="redeem"
         ).count()
         negative = (
-            self.transaction_position_items.filter(position__type='reverse')
+            self.transaction_position_items.filter(position__type="reverse")
             .exclude(position__preorder_position__isnull=True)
             .count()
         )
@@ -280,64 +280,63 @@ class Item(models.Model):
 
 class ProductItem(models.Model):
     product = models.ForeignKey(
-        'Product', on_delete=models.PROTECT, related_name='product_items'
+        "Product", on_delete=models.PROTECT, related_name="product_items"
     )
     item = models.ForeignKey(
-        'Item', on_delete=models.PROTECT, related_name='product_items'
+        "Item", on_delete=models.PROTECT, related_name="product_items"
     )
     is_visible = models.BooleanField(
-        default=True, help_text='If activated, this item will be shown in the frontend'
+        default=True, help_text="If activated, this item will be shown in the frontend"
     )
     amount = models.IntegerField()
 
 
 class TransactionPositionItem(models.Model):
     position = models.ForeignKey(
-        'TransactionPosition',
+        "TransactionPosition",
         on_delete=models.PROTECT,
-        related_name='transaction_position_items',
+        related_name="transaction_position_items",
     )
     item = models.ForeignKey(
-        'Item', on_delete=models.PROTECT, related_name='transaction_position_items'
+        "Item", on_delete=models.PROTECT, related_name="transaction_position_items"
     )
     amount = models.IntegerField()
 
 
 class ItemSupplyPack(models.Model):
     STATES = (
-        ('backoffice', _('In backoffice')),
-        ('troubleshooter', _('With troubleshooter')),
-        ('dissolved', _('Dissolved for other reasons')),
-        ('used', _('Used to refill cash session')),
+        ("backoffice", _("In backoffice")),
+        ("troubleshooter", _("With troubleshooter")),
+        ("dissolved", _("Dissolved for other reasons")),
+        ("used", _("Used to refill cash session")),
     )
     identifier = models.CharField(max_length=190, unique=True)
     item = models.ForeignKey(
-        'Item', on_delete=models.PROTECT, related_name='supply_packs'
+        "Item", on_delete=models.PROTECT, related_name="supply_packs"
     )
     amount = models.IntegerField(default=50)
-    state = models.CharField(
-        max_length=190,
-        choices=STATES
-    )
+    state = models.CharField(max_length=190, choices=STATES)
 
     def __str__(self):
         return self.identifier
 
 
 class ItemSupplyPackLog(models.Model):
-    supply_pack = models.ForeignKey(ItemSupplyPack, related_name='logs', on_delete=models.PROTECT)
-    new_state = models.CharField(
-        max_length=190,
-        choices=ItemSupplyPack.STATES
+    supply_pack = models.ForeignKey(
+        ItemSupplyPack, related_name="logs", on_delete=models.PROTECT
     )
+    new_state = models.CharField(max_length=190, choices=ItemSupplyPack.STATES)
     item_movement = models.ForeignKey(
-        'ItemMovement', null=True, blank=True, on_delete=models.PROTECT,
-        verbose_name='Associated item movement'
+        "ItemMovement",
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        verbose_name="Associated item movement",
     )
     user = models.ForeignKey(
-        'User',
+        "User",
         on_delete=models.PROTECT,
-        related_name='item_supply_logs',
-        verbose_name='User issuing movement',
+        related_name="item_supply_logs",
+        verbose_name="User issuing movement",
     )
     datetime = models.DateTimeField(auto_now_add=True, null=True, blank=True)

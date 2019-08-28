@@ -5,14 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0065_auto_20190819_1251'),
-    ]
+    dependencies = [("core", "0065_auto_20190819_1251")]
 
     operations = [
         migrations.AddField(
-            model_name='product',
-            name='is_admission',
+            model_name="product",
+            name="is_admission",
             field=models.BooleanField(default=False),
-        ),
+        )
     ]

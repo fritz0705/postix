@@ -1,6 +1,8 @@
 import pytest
 from tests.factories import (
-    preorder_position_factory, product_factory, quota_factory,
+    preorder_position_factory,
+    product_factory,
+    quota_factory,
     transaction_position_factory,
 )
 

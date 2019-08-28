@@ -7,19 +7,13 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0030_ping'),
-    ]
+    dependencies = [("core", "0030_ping")]
 
     operations = [
-        migrations.AlterModelManagers(
-            name='cashdesksession',
-            managers=[
-            ],
-        ),
+        migrations.AlterModelManagers(name="cashdesksession", managers=[]),
         migrations.AlterField(
-            model_name='user',
-            name='auth_token',
+            model_name="user",
+            name="auth_token",
             field=models.CharField(blank=True, max_length=254, null=True, unique=True),
         ),
     ]

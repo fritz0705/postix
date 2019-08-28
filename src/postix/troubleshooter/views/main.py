@@ -13,14 +13,17 @@ def main_view(request: HttpRequest) -> HttpResponse:
     ctx = {}
 
     sessions = []
-    for c in Cashdesk.objects.filter(is_active=True).order_by('name'):
+    for c in Cashdesk.objects.filter(is_active=True).order_by("name"):
         for sess in c.get_active_sessions():
             sess.current_items = sess.get_current_items()
             sessions.append(sess)
 
-    ctx['sessions'] = sessions
-    ctx['troubleshooter_stock'] = ItemSupplyPack.objects.filter(
-        state='troubleshooter'
-    ).order_by().values('item', 'item__name').annotate(s=Sum('amount'))
+    ctx["sessions"] = sessions
+    ctx["troubleshooter_stock"] = (
+        ItemSupplyPack.objects.filter(state="troubleshooter")
+        .order_by()
+        .values("item", "item__name")
+        .annotate(s=Sum("amount"))
+    )
 
-    return render(request, 'troubleshooter/main.html', ctx)
+    return render(request, "troubleshooter/main.html", ctx)

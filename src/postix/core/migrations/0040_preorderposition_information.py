@@ -7,14 +7,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0039_auto_20171217_1735'),
-    ]
+    dependencies = [("core", "0039_auto_20171217_1735")]
 
     operations = [
         migrations.AddField(
-            model_name='preorderposition',
-            name='information',
+            model_name="preorderposition",
+            name="information",
             field=models.CharField(blank=True, max_length=1000, null=True),
-        ),
+        )
     ]

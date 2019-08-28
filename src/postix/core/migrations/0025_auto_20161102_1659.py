@@ -7,13 +7,10 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0024_troubleshooternotification'),
-    ]
+    dependencies = [("core", "0024_troubleshooternotification")]
 
     operations = [
         migrations.AlterUniqueTogether(
-            name='listconstraintentry',
-            unique_together=set([('list', 'identifier')]),
-        ),
+            name="listconstraintentry", unique_together=set([("list", "identifier")])
+        )
     ]

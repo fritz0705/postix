@@ -7,24 +7,49 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0014_product_receipt_name'),
-    ]
+    dependencies = [("core", "0014_product_receipt_name")]
 
     operations = [
         migrations.CreateModel(
-            name='EventSettings',
+            name="EventSettings",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(default='Generic Event', max_length=100)),
-                ('short_name', models.CharField(default='GE', help_text='A short name for your event.', max_length=50)),
-                ('support_contact', models.CharField(default='Who is flying this thing? Enter your contact information as support contact info, please.', help_text='Your - yes YOUR - real-time contact info, e.g. phone number.', max_length=200)),
-                ('invoice_address', models.CharField(max_length=200)),
-                ('receipt_address', models.CharField(max_length=200)),
-                ('receipt_footer', models.CharField(default='Thank you!', help_text='Use this to display additional disclaimers/data not in your address, such as VAT IDs.', max_length=200)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(default="Generic Event", max_length=100)),
+                (
+                    "short_name",
+                    models.CharField(
+                        default="GE",
+                        help_text="A short name for your event.",
+                        max_length=50,
+                    ),
+                ),
+                (
+                    "support_contact",
+                    models.CharField(
+                        default="Who is flying this thing? Enter your contact information as support contact info, please.",
+                        help_text="Your - yes YOUR - real-time contact info, e.g. phone number.",
+                        max_length=200,
+                    ),
+                ),
+                ("invoice_address", models.CharField(max_length=200)),
+                ("receipt_address", models.CharField(max_length=200)),
+                (
+                    "receipt_footer",
+                    models.CharField(
+                        default="Thank you!",
+                        help_text="Use this to display additional disclaimers/data not in your address, such as VAT IDs.",
+                        max_length=200,
+                    ),
+                ),
             ],
-            options={
-                'verbose_name': 'Event Settings',
-            },
-        ),
+            options={"verbose_name": "Event Settings"},
+        )
     ]

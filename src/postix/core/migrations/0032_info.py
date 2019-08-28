@@ -7,18 +7,24 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0031_auto_20161217_2033'),
-    ]
+    dependencies = [("core", "0031_auto_20161217_2033")]
 
     operations = [
         migrations.CreateModel(
-            name='Info',
+            name="Info",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('content', models.CharField(max_length=2500)),
-                ('name', models.CharField(blank=True, max_length=40, null=True)),
-                ('is_printable', models.BooleanField(default=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("content", models.CharField(max_length=2500)),
+                ("name", models.CharField(blank=True, max_length=40, null=True)),
+                ("is_printable", models.BooleanField(default=True)),
             ],
-        ),
+        )
     ]

@@ -17,7 +17,9 @@ from .base import Item, Product, TransactionPosition, TransactionPositionItem
 
 
 def generate_key() -> str:
-    return get_random_string(length=32, allowed_chars=string.ascii_letters + string.digits)
+    return get_random_string(
+        length=32, allowed_chars=string.ascii_letters + string.digits
+    )
 
 
 class Cashdesk(Exportable, models.Model):
@@ -30,27 +32,27 @@ class Cashdesk(Exportable, models.Model):
     )
     record_detail = models.CharField(
         max_length=200,
-        help_text='For example the name of the bar. Leave empty for presale cashdesks.',
+        help_text="For example the name of the bar. Leave empty for presale cashdesks.",
         null=True,
         blank=True,
     )
     ip_address = models.GenericIPAddressField(
-        verbose_name=_('IP address'), null=True, blank=True
+        verbose_name=_("IP address"), null=True, blank=True
     )
     printer_queue_name = models.CharField(
         max_length=254,
         null=True,
         blank=True,
-        verbose_name=_('Printer queue name'),
-        help_text=_('The name configured in CUPS'),
+        verbose_name=_("Printer queue name"),
+        help_text=_("The name configured in CUPS"),
     )
     is_active = models.BooleanField(default=True)
     printer_handles_drawer = models.BooleanField(
         default=True,
-        verbose_name=_('Printer handles drawer'),
-        help_text=_('Unset if the printer or drawer are broken.'),
+        verbose_name=_("Printer handles drawer"),
+        help_text=_("Unset if the printer or drawer are broken."),
     )
-    handles_items = models.BooleanField(default=True, verbose_name=_('Handles items'))
+    handles_items = models.BooleanField(default=True, verbose_name=_("Handles items"))
 
     def __str__(self) -> str:
         return self.name
@@ -82,8 +84,8 @@ class Cashdesk(Exportable, models.Model):
 
 
 class CashdeskDeviceVariantChoices:
-    DISPLAY = 'display'
-    DUMMY = 'dummy'
+    DISPLAY = "display"
+    DUMMY = "dummy"
 
     _choices = ((val, val) for val in [DISPLAY, DUMMY])
 
@@ -93,12 +95,12 @@ class CashdeskDevice(models.Model):
         max_length=10, choices=CashdeskDeviceVariantChoices._choices
     )
     cashdesk = models.ForeignKey(
-        to='Cashdesk', on_delete=models.CASCADE, related_name='devices'
+        to="Cashdesk", on_delete=models.CASCADE, related_name="devices"
     )
     target = models.CharField(
         max_length=100,
-        verbose_name='Device endpoint',
-        help_text='Address of any kind under which to reach the device.',
+        verbose_name="Device endpoint",
+        help_text="Address of any kind under which to reach the device.",
     )
 
     DEVICE_MAP = {
@@ -131,46 +133,46 @@ class ActiveCashdeskSessionManager(models.Manager):
 
 class CashdeskSession(models.Model):
     cashdesk = models.ForeignKey(
-        'Cashdesk', related_name='sessions', on_delete=models.PROTECT
+        "Cashdesk", related_name="sessions", on_delete=models.PROTECT
     )
-    user = models.ForeignKey('User', on_delete=models.PROTECT, null=True, blank=True)
+    user = models.ForeignKey("User", on_delete=models.PROTECT, null=True, blank=True)
     start = models.DateTimeField(
         default=now,
-        verbose_name='Start of session',
-        help_text='Default: time of creation.',
+        verbose_name="Start of session",
+        help_text="Default: time of creation.",
     )
     end = models.DateTimeField(
         null=True,
         blank=True,
-        verbose_name='End of session',
-        help_text='Only set if session has ended',
+        verbose_name="End of session",
+        help_text="Only set if session has ended",
     )
     cash_after = models.DecimalField(
         max_digits=10,
         decimal_places=2,
         null=True,
         blank=True,
-        verbose_name='Cash in drawer after session',
+        verbose_name="Cash in drawer after session",
     )
     backoffice_user_before = models.ForeignKey(
-        'User',
+        "User",
         on_delete=models.PROTECT,
-        related_name='supervised_session_starts',
-        verbose_name='Backoffice operator before session',
+        related_name="supervised_session_starts",
+        verbose_name="Backoffice operator before session",
     )
     backoffice_user_after = models.ForeignKey(
-        'User',
+        "User",
         on_delete=models.PROTECT,
         null=True,
         blank=True,
-        related_name='supervised_session_ends',
-        verbose_name='Backoffice operator after session',
+        related_name="supervised_session_ends",
+        verbose_name="Backoffice operator after session",
     )
     api_token = models.CharField(
         max_length=254,
         default=generate_key,
-        verbose_name='API token',
-        help_text='Used for non-browser sessions. Generated automatically.',
+        verbose_name="API token",
+        help_text="Used for non-browser sessions. Generated automatically.",
     )
     comment = models.TextField(blank=True)
 
@@ -178,7 +180,7 @@ class CashdeskSession(models.Model):
     active = ActiveCashdeskSessionManager()
 
     def __str__(self) -> str:
-        return '#{2} ({0} on {1})'.format(self.user, self.cashdesk, self.pk)
+        return "#{2} ({0} on {1})".format(self.user, self.cashdesk, self.pk)
 
     def is_active(self) -> bool:
         return (not self.start or self.start < now()) and not self.end
@@ -187,20 +189,20 @@ class CashdeskSession(models.Model):
         return [
             Item.objects.get(pk=pk)
             for pk in self.item_movements.order_by()
-            .values_list('item', flat=True)
+            .values_list("item", flat=True)
             .distinct()
         ]
 
     def get_current_items(self) -> List[Dict]:
         transactions = (
-            TransactionPositionItem.objects.values('item')
+            TransactionPositionItem.objects.values("item")
             .filter(position__transaction__session=self)
-            .exclude(position__type='reverse')
+            .exclude(position__type="reverse")
             .filter(position__reversed_by=None)
-            .annotate(total=models.Sum('amount'))
+            .annotate(total=models.Sum("amount"))
         )
-        item_movements = self.item_movements.values('item').annotate(
-            total=models.Sum('amount')
+        item_movements = self.item_movements.values("item").annotate(
+            total=models.Sum("amount")
         )
 
         transaction_dict = defaultdict(int)
@@ -210,22 +212,22 @@ class CashdeskSession(models.Model):
             post_movements = item_movements.filter(timestamp__gte=self.end)
             item_movements = item_movements.filter(timestamp__lt=self.end)
             for d in post_movements:
-                post_movement_dict[d['item']] += d['total']
+                post_movement_dict[d["item"]] += d["total"]
 
         for d in item_movements:
-            movement_dict[d['item']] += d['total']
+            movement_dict[d["item"]] += d["total"]
         for d in transactions:
-            transaction_dict[d['item']] += d['total']
+            transaction_dict[d["item"]] += d["total"]
 
         return [
             {
-                'item': item,
-                'movements': movement_dict.get(item.pk, 0),
-                'transactions': transaction_dict.get(item.pk, 0),
-                'final_movements': -post_movement_dict.get(item.pk, 0)
+                "item": item,
+                "movements": movement_dict.get(item.pk, 0),
+                "transactions": transaction_dict.get(item.pk, 0),
+                "final_movements": -post_movement_dict.get(item.pk, 0)
                 if self.end
                 else 0,
-                'total': movement_dict.get(item.pk, 0)
+                "total": movement_dict.get(item.pk, 0)
                 + post_movement_dict.get(item.pk, 0)
                 - transaction_dict.get(item.pk, 0),
             }
@@ -244,10 +246,10 @@ class CashdeskSession(models.Model):
 
     @property
     def final_cash_movement(self):
-        movement = self.cash_movements.all().order_by('-timestamp').first()
+        movement = self.cash_movements.all().order_by("-timestamp").first()
         if (
             not self.end
-            or not hasattr(movement, 'record')
+            or not hasattr(movement, "record")
             or not movement.record.closes_session
         ):
             return None
@@ -258,7 +260,7 @@ class CashdeskSession(models.Model):
         if movement:
             if movement.record.is_locked:
                 raise Exception(
-                    _('Session has already been finalized and the record is locked.')
+                    _("Session has already been finalized and the record is locked.")
                 )
         else:
             movement = CashMovement(session=self)
@@ -273,13 +275,13 @@ class CashdeskSession(models.Model):
         qs = self.cash_movements.all()
         if self.end and self.final_cash_movement:
             qs = qs.exclude(pk=self.final_cash_movement.pk)
-        return qs.aggregate(total=Sum('cash'))['total'] or Decimal('0.00')
+        return qs.aggregate(total=Sum("cash"))["total"] or Decimal("0.00")
 
     def get_cash_transaction_total(self) -> Decimal:
         return (
             TransactionPosition.objects.filter(transaction__session=self).aggregate(
-                total=models.Sum('value')
-            )['total']
+                total=models.Sum("value")
+            )["total"]
             or 0
         )
 
@@ -290,30 +292,30 @@ class CashdeskSession(models.Model):
         # Apparently, .values() does not support Func() expressions :(
         for p in (
             qs.order_by()
-            .extra(select={'value_abs': "ABS(value)"})
-            .values('product', 'value_abs')
+            .extra(select={"value_abs": "ABS(value)"})
+            .values("product", "value_abs")
             .distinct()
         ):
-            product = Product.objects.get(pk=p['product'])
+            product = Product.objects.get(pk=p["product"])
             product_query = qs.filter(
-                product=product, value__in=[p['value_abs'], -p['value_abs']]
+                product=product, value__in=[p["value_abs"], -p["value_abs"]]
             )
             summary = {
-                'product': product,
-                'sales': product_query.filter(type='sell').count(),
-                'presales': product_query.filter(type='redeem').count(),
-                'reversals': product_query.filter(type='reverse').count(),
-                'value_single': p['value_abs'],
+                "product": product,
+                "sales": product_query.filter(type="sell").count(),
+                "presales": product_query.filter(type="redeem").count(),
+                "reversals": product_query.filter(type="reverse").count(),
+                "value_single": p["value_abs"],
             }
-            summary['value_total'] = product_query.aggregate(s=Sum('value'))['s'] or 0
+            summary["value_total"] = product_query.aggregate(s=Sum("value"))["s"] or 0
             result.append(summary)
 
-        result = sorted(result, key=lambda entry: entry['product'].name)
+        result = sorted(result, key=lambda entry: entry["product"].name)
         return result
 
     def request_resupply(self) -> None:
         TroubleshooterNotification.objects.create(
-            session=self, modified_by=self.user, message='Requesting resupply'
+            session=self, modified_by=self.user, message="Requesting resupply"
         )
 
     def has_open_requests(self) -> bool:
@@ -330,34 +332,34 @@ class ItemMovement(models.Model):
     items are removed and counted manually. """
 
     session = models.ForeignKey(
-        'CashdeskSession',
+        "CashdeskSession",
         on_delete=models.PROTECT,
-        related_name='item_movements',
-        verbose_name='Session the item was involved in',
+        related_name="item_movements",
+        verbose_name="Session the item was involved in",
     )
     item = models.ForeignKey(
-        'Item',
+        "Item",
         on_delete=models.PROTECT,
-        related_name='item_movements',
-        verbose_name='Item moved to/from this session',
+        related_name="item_movements",
+        verbose_name="Item moved to/from this session",
     )
     amount = models.IntegerField(
-        help_text='Negative values indicate that items were taken out of a session. '
-        'Mostly used when counting items after ending a session.'
+        help_text="Negative values indicate that items were taken out of a session. "
+        "Mostly used when counting items after ending a session."
     )
     backoffice_user = models.ForeignKey(
-        'User',
+        "User",
         on_delete=models.PROTECT,
-        related_name='supervised_item_movements',
-        verbose_name='Backoffice operator issuing movement',
+        related_name="supervised_item_movements",
+        verbose_name="Backoffice operator issuing movement",
     )
     timestamp = models.DateTimeField(default=now, editable=False)
 
     class Meta:
-        ordering = ('timestamp',)
+        ordering = ("timestamp",)
 
     def __str__(self) -> str:
-        return 'ItemMovement ({} {} at {})'.format(
+        return "ItemMovement ({} {} at {})".format(
             self.amount, self.item, self.session.cashdesk.name
         )
 
@@ -366,22 +368,22 @@ class CashMovement(models.Model):
     """ Similar to ItemMovement """
 
     session = models.ForeignKey(
-        'CashdeskSession',
+        "CashdeskSession",
         on_delete=models.PROTECT,
-        related_name='cash_movements',
-        verbose_name='Session the item was involved in',
+        related_name="cash_movements",
+        verbose_name="Session the item was involved in",
     )
     cash = models.DecimalField(
         max_digits=10,
         decimal_places=2,
-        default=Decimal('0.00'),
-        verbose_name='Cash moved. Negative means taking it out of the session.',
+        default=Decimal("0.00"),
+        verbose_name="Cash moved. Negative means taking it out of the session.",
     )
     backoffice_user = models.ForeignKey(
-        'User',
+        "User",
         on_delete=models.PROTECT,
-        related_name='supervised_cash_movements',
-        verbose_name='Backoffice operator issuing movement',
+        related_name="supervised_cash_movements",
+        verbose_name="Backoffice operator issuing movement",
     )
     timestamp = models.DateTimeField(default=now, editable=False)
 
@@ -389,11 +391,11 @@ class CashMovement(models.Model):
         from postix.backoffice.report import generate_record
         from postix.core.models import Record
 
-        record = getattr(self, 'record', None)
+        record = getattr(self, "record", None)
         if not record:
             record = Record(cash_movement=self)
         record.amount = abs(self.cash)
-        record.type = 'inflow' if self.cash < 0 else 'outflow'
+        record.type = "inflow" if self.cash < 0 else "outflow"
         record.backoffice_user = self.backoffice_user
         record.is_balancing = False
         record.closes_session = closes_session
@@ -418,19 +420,19 @@ class TroubleshooterNotification(models.Model):
     Used for resupply requests at the moment.
     """
 
-    STATUS_ACK = 'ACK'
-    STATUS_NEW = 'New'
+    STATUS_ACK = "ACK"
+    STATUS_NEW = "New"
     STATUS_CHOICES = [(STATUS_ACK, STATUS_ACK), (STATUS_NEW, STATUS_NEW)]
 
     session = models.ForeignKey(
-        'CashdeskSession',
-        verbose_name='Cashdesk session initiating the notification',
+        "CashdeskSession",
+        verbose_name="Cashdesk session initiating the notification",
         on_delete=models.PROTECT,
     )
     message = models.CharField(max_length=500)
     created = models.DateTimeField(default=now, editable=False)
     modified = models.DateTimeField(default=now)
-    modified_by = models.ForeignKey('User', on_delete=models.PROTECT)
+    modified_by = models.ForeignKey("User", on_delete=models.PROTECT)
     status = models.CharField(choices=STATUS_CHOICES, default=STATUS_NEW, max_length=3)
 
     objects = NotificationsManager()

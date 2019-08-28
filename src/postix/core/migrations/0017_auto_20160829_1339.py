@@ -7,23 +7,28 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0016_eventsettings_report_footer'),
-    ]
+    dependencies = [("core", "0016_eventsettings_report_footer")]
 
     operations = [
         migrations.AlterModelOptions(
-            name='product',
-            options={'ordering': ('-priority', 'pk')},
+            name="product", options={"ordering": ("-priority", "pk")}
         ),
         migrations.AddField(
-            model_name='product',
-            name='priority',
-            field=models.IntegerField(default=0, help_text='Will be used for sorting, high priorities come first.', verbose_name='Priority'),
+            model_name="product",
+            name="priority",
+            field=models.IntegerField(
+                default=0,
+                help_text="Will be used for sorting, high priorities come first.",
+                verbose_name="Priority",
+            ),
         ),
         migrations.AlterField(
-            model_name='eventsettings',
-            name='report_footer',
-            field=models.CharField(default='CCC Veranstaltungsgesellschaft mbH', help_text='This will show up on backoffice session reports.', max_length=500),
+            model_name="eventsettings",
+            name="report_footer",
+            field=models.CharField(
+                default="CCC Veranstaltungsgesellschaft mbH",
+                help_text="This will show up on backoffice session reports.",
+                max_length=500,
+            ),
         ),
     ]

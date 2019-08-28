@@ -4,7 +4,7 @@ from itertools import repeat
 
 times = partial(repeat, None)
 
-DECIMAL_QUANTIZE = decimal.Decimal('0.01')
+DECIMAL_QUANTIZE = decimal.Decimal("0.01")
 
 
 def round_decimal(d: decimal.Decimal) -> decimal.Decimal:

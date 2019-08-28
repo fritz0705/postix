@@ -5,19 +5,19 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0048_auto_20181019_0012'),
-    ]
+    dependencies = [("core", "0048_auto_20181019_0012")]
 
     operations = [
         migrations.AddField(
-            model_name='cashdesk',
-            name='handles_items',
+            model_name="cashdesk",
+            name="handles_items",
             field=models.BooleanField(default=True),
         ),
         migrations.AlterField(
-            model_name='cashdesk',
-            name='ip_address',
-            field=models.GenericIPAddressField(blank=True, null=True, verbose_name='IP-Adresse'),
+            model_name="cashdesk",
+            name="ip_address",
+            field=models.GenericIPAddressField(
+                blank=True, null=True, verbose_name="IP-Adresse"
+            ),
         ),
     ]

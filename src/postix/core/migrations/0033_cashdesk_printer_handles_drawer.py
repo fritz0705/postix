@@ -7,14 +7,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0032_info'),
-    ]
+    dependencies = [("core", "0032_info")]
 
     operations = [
         migrations.AddField(
-            model_name='cashdesk',
-            name='printer_handles_drawer',
+            model_name="cashdesk",
+            name="printer_handles_drawer",
             field=models.BooleanField(default=True),
-        ),
+        )
     ]

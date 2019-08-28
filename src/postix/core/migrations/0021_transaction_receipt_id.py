@@ -7,14 +7,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0020_user_is_backoffice_user'),
-    ]
+    dependencies = [("core", "0020_user_is_backoffice_user")]
 
     operations = [
         migrations.AddField(
-            model_name='transaction',
-            name='receipt_id',
+            model_name="transaction",
+            name="receipt_id",
             field=models.PositiveIntegerField(blank=True, null=True, unique=True),
-        ),
+        )
     ]

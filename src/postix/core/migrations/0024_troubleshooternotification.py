@@ -10,21 +10,52 @@ import django.utils.timezone
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0023_auto_20161019_1754'),
-    ]
+    dependencies = [("core", "0023_auto_20161019_1754")]
 
     operations = [
         migrations.CreateModel(
-            name='TroubleshooterNotification',
+            name="TroubleshooterNotification",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('message', models.CharField(max_length=500)),
-                ('created', models.DateTimeField(default=django.utils.timezone.now, editable=False)),
-                ('modified', models.DateTimeField(default=django.utils.timezone.now)),
-                ('status', models.CharField(choices=[('ACK', 'ACK'), ('New', 'New')], default='New', max_length=3)),
-                ('modified_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-                ('session', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.CashdeskSession', verbose_name='Cashdesk session initiating the notification')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("message", models.CharField(max_length=500)),
+                (
+                    "created",
+                    models.DateTimeField(
+                        default=django.utils.timezone.now, editable=False
+                    ),
+                ),
+                ("modified", models.DateTimeField(default=django.utils.timezone.now)),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[("ACK", "ACK"), ("New", "New")],
+                        default="New",
+                        max_length=3,
+                    ),
+                ),
+                (
+                    "modified_by",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "session",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.CashdeskSession",
+                        verbose_name="Cashdesk session initiating the notification",
+                    ),
+                ),
             ],
-        ),
+        )
     ]

@@ -8,7 +8,7 @@ def test_troubleshooter_can_see_all_entries(troubleshooter_client):
     constraint = list_constraint_factory()
     entries = [list_constraint_entry_factory(constraint) for _ in range(3)]
     response = troubleshooter_client.get(
-        '/troubleshooter/constraints/{}/'.format(constraint.pk)
+        "/troubleshooter/constraints/{}/".format(constraint.pk)
     )
     assert response.status_code == 200
     content = response.content.decode()
@@ -21,7 +21,7 @@ def test_troubleshooter_cannot_see_entries_if_confidential(troubleshooter_client
     constraint = list_constraint_factory(confidential=True)
     entries = [list_constraint_entry_factory(constraint) for _ in range(3)]
     response = troubleshooter_client.get(
-        '/troubleshooter/constraints/{}/'.format(constraint.pk)
+        "/troubleshooter/constraints/{}/".format(constraint.pk)
     )
     assert response.status_code == 200
     content = response.content.decode()
@@ -35,7 +35,7 @@ def test_troubleshooter_can_filter_all_entries(troubleshooter_client):
     entries = [list_constraint_entry_factory(constraint) for _ in range(3)]
     query = entries[0].name[:1]
     response = troubleshooter_client.get(
-        '/troubleshooter/constraints/{}/?filter={}'.format(constraint.pk, query)
+        "/troubleshooter/constraints/{}/?filter={}".format(constraint.pk, query)
     )
     assert response.status_code == 200
     content = response.content.decode()
@@ -50,7 +50,7 @@ def test_troubleshooter_cannot_filter_entries_if_confidential_and_too_short(
     entries = [list_constraint_entry_factory(constraint) for _ in range(3)]
     query = entries[0].name[:1]
     response = troubleshooter_client.get(
-        '/troubleshooter/constraints/{}/?filter={}'.format(constraint.pk, query)
+        "/troubleshooter/constraints/{}/?filter={}".format(constraint.pk, query)
     )
     assert response.status_code == 200
     content = response.content.decode()
@@ -65,7 +65,7 @@ def test_troubleshooter_can_filter_entries_if_confidential_and_long_enough(
     entries = [list_constraint_entry_factory(constraint) for _ in range(3)]
     query = entries[0].name[:5]
     response = troubleshooter_client.get(
-        '/troubleshooter/constraints/{}/?filter={}'.format(constraint.pk, query)
+        "/troubleshooter/constraints/{}/?filter={}".format(constraint.pk, query)
     )
     assert response.status_code == 200
     content = response.content.decode()

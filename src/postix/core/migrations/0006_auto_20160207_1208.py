@@ -8,32 +8,88 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0005_auto_20160207_1138'),
-    ]
+    dependencies = [("core", "0005_auto_20160207_1138")]
 
     operations = [
         migrations.CreateModel(
-            name='ListConstraintProduct',
+            name="ListConstraintProduct",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('constraint', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='product_constraints', to='core.ListConstraint')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='product_list_constraints', to='core.Product')),
-                ('upgrade_products', models.ManyToManyField(blank=True, to='core.Product', verbose_name='Bypass possible with upgrade')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "constraint",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="product_constraints",
+                        to="core.ListConstraint",
+                    ),
+                ),
+                (
+                    "product",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="product_list_constraints",
+                        to="core.Product",
+                    ),
+                ),
+                (
+                    "upgrade_products",
+                    models.ManyToManyField(
+                        blank=True,
+                        to="core.Product",
+                        verbose_name="Bypass possible with upgrade",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='WarningConstraintProduct',
+            name="WarningConstraintProduct",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('constraint', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='product_constraints', to='core.WarningConstraint')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='product_warning_constraints', to='core.Product')),
-                ('upgrade_products', models.ManyToManyField(blank=True, to='core.Product', verbose_name='Bypass possible with upgrade')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "constraint",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="product_constraints",
+                        to="core.WarningConstraint",
+                    ),
+                ),
+                (
+                    "product",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="product_warning_constraints",
+                        to="core.Product",
+                    ),
+                ),
+                (
+                    "upgrade_products",
+                    models.ManyToManyField(
+                        blank=True,
+                        to="core.Product",
+                        verbose_name="Bypass possible with upgrade",
+                    ),
+                ),
             ],
         ),
         migrations.AlterField(
-            model_name='preorder',
-            name='warning_text',
+            model_name="preorder",
+            name="warning_text",
             field=models.TextField(blank=True),
         ),
     ]

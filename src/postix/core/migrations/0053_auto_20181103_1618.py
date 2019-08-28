@@ -5,49 +5,75 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0052_auto_20181103_1610'),
-    ]
+    dependencies = [("core", "0052_auto_20181103_1610")]
 
     operations = [
         migrations.AlterField(
-            model_name='eventsettings',
-            name='invoice_address',
-            field=models.CharField(blank=True, max_length=200, null=True, verbose_name='Invoice address'),
+            model_name="eventsettings",
+            name="invoice_address",
+            field=models.CharField(
+                blank=True, max_length=200, null=True, verbose_name="Invoice address"
+            ),
         ),
         migrations.AlterField(
-            model_name='eventsettings',
-            name='invoice_footer',
-            field=models.CharField(blank=True, max_length=200, null=True, verbose_name='Invoice footer'),
+            model_name="eventsettings",
+            name="invoice_footer",
+            field=models.CharField(
+                blank=True, max_length=200, null=True, verbose_name="Invoice footer"
+            ),
         ),
         migrations.AlterField(
-            model_name='eventsettings',
-            name='name',
-            field=models.CharField(default='Generic Event', max_length=100, verbose_name='Name'),
+            model_name="eventsettings",
+            name="name",
+            field=models.CharField(
+                default="Generic Event", max_length=100, verbose_name="Name"
+            ),
         ),
         migrations.AlterField(
-            model_name='eventsettings',
-            name='receipt_address',
-            field=models.CharField(blank=True, max_length=200, null=True, verbose_name='Receipt address'),
+            model_name="eventsettings",
+            name="receipt_address",
+            field=models.CharField(
+                blank=True, max_length=200, null=True, verbose_name="Receipt address"
+            ),
         ),
         migrations.AlterField(
-            model_name='eventsettings',
-            name='receipt_footer',
-            field=models.CharField(default='Thank you!', help_text='Use this to display additional disclaimers/data not in your address, such as VAT IDs.', max_length=200, verbose_name='Receipt footer'),
+            model_name="eventsettings",
+            name="receipt_footer",
+            field=models.CharField(
+                default="Thank you!",
+                help_text="Use this to display additional disclaimers/data not in your address, such as VAT IDs.",
+                max_length=200,
+                verbose_name="Receipt footer",
+            ),
         ),
         migrations.AlterField(
-            model_name='eventsettings',
-            name='report_footer',
-            field=models.CharField(default='CCC Veranstaltungsgesellschaft mbH', help_text='This will show up on backoffice session reports.', max_length=500, verbose_name='Report footer'),
+            model_name="eventsettings",
+            name="report_footer",
+            field=models.CharField(
+                default="CCC Veranstaltungsgesellschaft mbH",
+                help_text="This will show up on backoffice session reports.",
+                max_length=500,
+                verbose_name="Report footer",
+            ),
         ),
         migrations.AlterField(
-            model_name='eventsettings',
-            name='short_name',
-            field=models.CharField(default='GE', help_text='A short name for your event.', max_length=50, verbose_name='Short name'),
+            model_name="eventsettings",
+            name="short_name",
+            field=models.CharField(
+                default="GE",
+                help_text="A short name for your event.",
+                max_length=50,
+                verbose_name="Short name",
+            ),
         ),
         migrations.AlterField(
-            model_name='eventsettings',
-            name='support_contact',
-            field=models.CharField(default='Who is flying this thing? Enter your contact information as support contact info, please.', help_text='Your - yes YOUR - real-time contact info, e.g. phone number.', max_length=200, verbose_name='Support contact'),
+            model_name="eventsettings",
+            name="support_contact",
+            field=models.CharField(
+                default="Who is flying this thing? Enter your contact information as support contact info, please.",
+                help_text="Your - yes YOUR - real-time contact info, e.g. phone number.",
+                max_length=200,
+                verbose_name="Support contact",
+            ),
         ),
     ]

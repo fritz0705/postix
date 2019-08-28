@@ -7,29 +7,96 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0056_auto_20181207_1404'),
-    ]
+    dependencies = [("core", "0056_auto_20181207_1404")]
 
     operations = [
         migrations.CreateModel(
-            name='ItemSupplyPack',
+            name="ItemSupplyPack",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('identifier', models.CharField(max_length=190, unique=True)),
-                ('amount', models.IntegerField(default=50)),
-                ('state', models.CharField(choices=[('backoffice', 'In backoffice'), ('troubleshooter', 'With troubleshooter'), ('dissolved', 'Dissolved for other reasons'), ('used', 'Used to refill cash session')], max_length=190)),
-                ('item', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='supply_packs', to='core.Item')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("identifier", models.CharField(max_length=190, unique=True)),
+                ("amount", models.IntegerField(default=50)),
+                (
+                    "state",
+                    models.CharField(
+                        choices=[
+                            ("backoffice", "In backoffice"),
+                            ("troubleshooter", "With troubleshooter"),
+                            ("dissolved", "Dissolved for other reasons"),
+                            ("used", "Used to refill cash session"),
+                        ],
+                        max_length=190,
+                    ),
+                ),
+                (
+                    "item",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="supply_packs",
+                        to="core.Item",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='ItemSupplyPackLog',
+            name="ItemSupplyPackLog",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('new_state', models.CharField(choices=[('backoffice', 'In backoffice'), ('troubleshooter', 'With troubleshooter'), ('dissolved', 'Dissolved for other reasons'), ('used', 'Used to refill cash session')], max_length=190)),
-                ('item_movement', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='core.ItemMovement', verbose_name='Associated item movement')),
-                ('supply_pack', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='logs', to='core.ItemSupplyPack')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='item_supply_logs', to=settings.AUTH_USER_MODEL, verbose_name='User issuing movement')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "new_state",
+                    models.CharField(
+                        choices=[
+                            ("backoffice", "In backoffice"),
+                            ("troubleshooter", "With troubleshooter"),
+                            ("dissolved", "Dissolved for other reasons"),
+                            ("used", "Used to refill cash session"),
+                        ],
+                        max_length=190,
+                    ),
+                ),
+                (
+                    "item_movement",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to="core.ItemMovement",
+                        verbose_name="Associated item movement",
+                    ),
+                ),
+                (
+                    "supply_pack",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="logs",
+                        to="core.ItemSupplyPack",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="item_supply_logs",
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="User issuing movement",
+                    ),
+                ),
             ],
         ),
     ]

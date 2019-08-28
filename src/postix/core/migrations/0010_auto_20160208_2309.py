@@ -7,17 +7,9 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0009_auto_20160207_2045'),
-    ]
+    dependencies = [("core", "0009_auto_20160207_2045")]
 
     operations = [
-        migrations.RemoveField(
-            model_name='listconstraint',
-            name='products',
-        ),
-        migrations.RemoveField(
-            model_name='warningconstraint',
-            name='products',
-        ),
+        migrations.RemoveField(model_name="listconstraint", name="products"),
+        migrations.RemoveField(model_name="warningconstraint", name="products"),
     ]

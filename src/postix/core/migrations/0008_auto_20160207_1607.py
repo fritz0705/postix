@@ -8,14 +8,16 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0007_auto_20160207_1550'),
-    ]
+    dependencies = [("core", "0007_auto_20160207_1550")]
 
     operations = [
         migrations.AlterField(
-            model_name='listconstraintproduct',
-            name='product',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.PROTECT, related_name='product_list_constraint', to='core.Product'),
-        ),
+            model_name="listconstraintproduct",
+            name="product",
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="product_list_constraint",
+                to="core.Product",
+            ),
+        )
     ]

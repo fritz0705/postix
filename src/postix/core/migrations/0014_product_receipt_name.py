@@ -7,15 +7,13 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0013_auto_20160618_2216'),
-    ]
+    dependencies = [("core", "0013_auto_20160618_2216")]
 
     operations = [
         migrations.AddField(
-            model_name='product',
-            name='receipt_name',
-            field=models.CharField(default='receipt_name', max_length=28),
+            model_name="product",
+            name="receipt_name",
+            field=models.CharField(default="receipt_name", max_length=28),
             preserve_default=False,
-        ),
+        )
     ]

@@ -7,14 +7,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0019_merge'),
-    ]
+    dependencies = [("core", "0019_merge")]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='is_backoffice_user',
+            model_name="user",
+            name="is_backoffice_user",
             field=models.BooleanField(default=False),
-        ),
+        )
     ]

@@ -9,48 +9,70 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0045_auto_20180609_2153'),
-    ]
+    dependencies = [("core", "0045_auto_20180609_2153")]
 
     operations = [
         migrations.AlterModelOptions(
-            name='recordentity',
-            options={'ordering': ('name', 'detail')},
+            name="recordentity", options={"ordering": ("name", "detail")}
         ),
         migrations.AlterField(
-            model_name='record',
-            name='amount',
-            field=models.DecimalField(decimal_places=2, max_digits=10, verbose_name='Amount'),
+            model_name="record",
+            name="amount",
+            field=models.DecimalField(
+                decimal_places=2, max_digits=10, verbose_name="Amount"
+            ),
         ),
         migrations.AlterField(
-            model_name='record',
-            name='backoffice_user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='records', to=settings.AUTH_USER_MODEL, verbose_name='Backoffice user'),
+            model_name="record",
+            name="backoffice_user",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="records",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Backoffice user",
+            ),
         ),
         migrations.AlterField(
-            model_name='record',
-            name='carrier',
-            field=models.CharField(blank=True, max_length=200, null=True, verbose_name='Carrier'),
+            model_name="record",
+            name="carrier",
+            field=models.CharField(
+                blank=True, max_length=200, null=True, verbose_name="Carrier"
+            ),
         ),
         migrations.AlterField(
-            model_name='record',
-            name='datetime',
-            field=models.DateTimeField(help_text='Leave empty to use the current date and time.', verbose_name='Date'),
+            model_name="record",
+            name="datetime",
+            field=models.DateTimeField(
+                help_text="Leave empty to use the current date and time.",
+                verbose_name="Date",
+            ),
         ),
         migrations.AlterField(
-            model_name='record',
-            name='entity',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='records', to='core.RecordEntity', verbose_name='Entity'),
+            model_name="record",
+            name="entity",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="records",
+                to="core.RecordEntity",
+                verbose_name="Entity",
+            ),
         ),
         migrations.AlterField(
-            model_name='record',
-            name='is_balancing',
-            field=models.BooleanField(default=False, verbose_name='Is a balancing record'),
+            model_name="record",
+            name="is_balancing",
+            field=models.BooleanField(
+                default=False, verbose_name="Is a balancing record"
+            ),
         ),
         migrations.AlterField(
-            model_name='record',
-            name='type',
-            field=models.CharField(choices=[('inflow', 'Inflow'), ('outflow', 'Outflow')], max_length=20, verbose_name='Direction'),
+            model_name="record",
+            name="type",
+            field=models.CharField(
+                choices=[("inflow", "Inflow"), ("outflow", "Outflow")],
+                max_length=20,
+                verbose_name="Direction",
+            ),
         ),
     ]

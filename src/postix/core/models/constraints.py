@@ -14,7 +14,7 @@ class AbstractConstraint(models.Model):
 class Quota(AbstractConstraint):
     size = models.PositiveIntegerField()
     products = models.ManyToManyField(
-        'Product', verbose_name='Affected products', blank=True
+        "Product", verbose_name="Affected products", blank=True
     )
 
     @property
@@ -35,13 +35,13 @@ class Quota(AbstractConstraint):
 
 class TimeConstraint(AbstractConstraint):
     start = models.DateTimeField(
-        null=True, blank=True, verbose_name='Not available before'
+        null=True, blank=True, verbose_name="Not available before"
     )
     end = models.DateTimeField(
-        null=True, blank=True, verbose_name='Not available after'
+        null=True, blank=True, verbose_name="Not available after"
     )
     products = models.ManyToManyField(
-        'Product', verbose_name='Affected products', blank=True
+        "Product", verbose_name="Affected products", blank=True
     )
 
     def __str__(self) -> str:
@@ -50,32 +50,32 @@ class TimeConstraint(AbstractConstraint):
 
 class ListConstraintProduct(models.Model):
     product = models.OneToOneField(
-        'Product', on_delete=models.PROTECT, related_name='product_list_constraint'
+        "Product", on_delete=models.PROTECT, related_name="product_list_constraint"
     )
     constraint = models.ForeignKey(
-        'ListConstraint', on_delete=models.PROTECT, related_name='product_constraints'
+        "ListConstraint", on_delete=models.PROTECT, related_name="product_constraints"
     )
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     tax_rate = models.DecimalField(
         max_digits=5,
         decimal_places=2,
         default=Decimal("0.00"),
-        validators=[MinValueValidator(Decimal('0.00'))],
+        validators=[MinValueValidator(Decimal("0.00"))],
     )
 
 
 class ListConstraint(AbstractConstraint):
     products = models.ManyToManyField(
-        'Product',
-        verbose_name='Affected products',
+        "Product",
+        verbose_name="Affected products",
         blank=True,
-        through='ListConstraintProduct',
+        through="ListConstraintProduct",
     )
     confidential = models.BooleanField(
         default=False,
-        help_text='Confidential lists cannot be shown completely '
-        'and only searched for substrings longer than '
-        '3 letters for a maximum of 10 results.',
+        help_text="Confidential lists cannot be shown completely "
+        "and only searched for substrings longer than "
+        "3 letters for a maximum of 10 results.",
     )
 
     def __str__(self) -> str:
@@ -84,7 +84,7 @@ class ListConstraint(AbstractConstraint):
 
 class ListConstraintEntry(models.Model):
     list = models.ForeignKey(
-        'ListConstraint', related_name='entries', on_delete=models.PROTECT
+        "ListConstraint", related_name="entries", on_delete=models.PROTECT
     )
     name = models.CharField(max_length=254)
     identifier = models.CharField(max_length=254)
@@ -99,17 +99,17 @@ class ListConstraintEntry(models.Model):
         return "{} ({}) – {}".format(self.name, self.identifier, self.list)
 
     class Meta:
-        unique_together = (('list', 'identifier'),)
+        unique_together = (("list", "identifier"),)
 
 
 class WarningConstraintProduct(models.Model):
     product = models.ForeignKey(
-        'Product', on_delete=models.PROTECT, related_name='product_warning_constraints'
+        "Product", on_delete=models.PROTECT, related_name="product_warning_constraints"
     )
     constraint = models.ForeignKey(
-        'WarningConstraint',
+        "WarningConstraint",
         on_delete=models.PROTECT,
-        related_name='product_constraints',
+        related_name="product_constraints",
     )
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     tax_rate = models.DecimalField(
@@ -119,9 +119,9 @@ class WarningConstraintProduct(models.Model):
 
 class WarningConstraint(AbstractConstraint):
     products = models.ManyToManyField(
-        'Product',
-        verbose_name='Affected products',
+        "Product",
+        verbose_name="Affected products",
         blank=True,
-        through='WarningConstraintProduct',
+        through="WarningConstraintProduct",
     )
     message = models.TextField()

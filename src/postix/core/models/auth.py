@@ -34,7 +34,7 @@ class User(AbstractBaseUser):
     is_troubleshooter = models.BooleanField(default=False)
     auth_token = models.CharField(max_length=254, null=True, blank=True, unique=True)
 
-    USERNAME_FIELD = EMAIL_FIELD = 'username'
+    USERNAME_FIELD = EMAIL_FIELD = "username"
     objects = UserManager()
 
     def has_perm(self, perm, obj=None) -> bool:  # noqa
@@ -50,7 +50,7 @@ class User(AbstractBaseUser):
 
     def get_full_name(self) -> str:  # noqa
         if self.firstname and self.lastname:
-            return '{} {}'.format(self.firstname, self.lastname)
+            return "{} {}".format(self.firstname, self.lastname)
         elif self.firstname:
             return self.firstname
         return self.username
@@ -64,22 +64,23 @@ class User(AbstractBaseUser):
 
         return (
             CashdeskSession.objects.filter(user=self, end__isnull=True)
-            .order_by('-start')
+            .order_by("-start")
             .first()
         )
 
     @cached_property
     def hours(self):
         from .cashdesk import CashdeskSession
+
         total = timedelta()
         for session in CashdeskSession.objects.filter(user=self, end__isnull=False):
-            total += (session.end - session.start)
+            total += session.end - session.start
         if not total:
             return total
-        string_result = '{} days, '.format(total.days) if total.days else ''
+        string_result = "{} days, ".format(total.days) if total.days else ""
         hours = int(total.seconds / 60 / 60) % 24
         minutes = int(total.seconds / 60) % 60
-        string_result += '{}:{:02d}'.format(hours, minutes)
+        string_result += "{}:{:02d}".format(hours, minutes)
         return total, string_result
 
     def __str__(self) -> str:

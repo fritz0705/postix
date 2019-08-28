@@ -5,19 +5,25 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0062_auto_20190721_1704'),
-    ]
+    dependencies = [("core", "0062_auto_20190721_1704")]
 
     operations = [
         migrations.AlterField(
-            model_name='asset',
-            name='asset_type',
-            field=models.CharField(choices=[('box', 'Box'), ('inlay', 'Inlay'), ('bag', 'Bag'), ('counting_board', 'Counting board')], max_length=190),
+            model_name="asset",
+            name="asset_type",
+            field=models.CharField(
+                choices=[
+                    ("box", "Box"),
+                    ("inlay", "Inlay"),
+                    ("bag", "Bag"),
+                    ("counting_board", "Counting board"),
+                ],
+                max_length=190,
+            ),
         ),
         migrations.AlterField(
-            model_name='asset',
-            name='last_seen',
+            model_name="asset",
+            name="last_seen",
             field=models.DateTimeField(auto_now=True),
         ),
     ]

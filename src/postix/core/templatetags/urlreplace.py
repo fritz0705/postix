@@ -20,4 +20,4 @@ def _urlreplace(dict_, *pairs):
 
 @register.simple_tag
 def urlreplace(request, *pairs):
-    return _urlreplace(request.GET.copy(), *pairs).urlencode(safe='[]')
+    return _urlreplace(request.GET.copy(), *pairs).urlencode(safe="[]")

@@ -6,19 +6,26 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0049_auto_20181103_1229'),
-    ]
+    dependencies = [("core", "0049_auto_20181103_1229")]
 
     operations = [
         migrations.AddField(
-            model_name='record',
-            name='cash_movement',
-            field=models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='record', to='core.CashMovement'),
+            model_name="record",
+            name="cash_movement",
+            field=models.OneToOneField(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="record",
+                to="core.CashMovement",
+            ),
         ),
         migrations.AddField(
-            model_name='record',
-            name='closes_session',
-            field=models.BooleanField(default=False, verbose_name='Report closes session and contains additional pages'),
+            model_name="record",
+            name="closes_session",
+            field=models.BooleanField(
+                default=False,
+                verbose_name="Report closes session and contains additional pages",
+            ),
         ),
     ]

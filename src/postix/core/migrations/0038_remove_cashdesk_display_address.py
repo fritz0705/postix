@@ -7,13 +7,6 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0037_cashdeskdevice'),
-    ]
+    dependencies = [("core", "0037_cashdeskdevice")]
 
-    operations = [
-        migrations.RemoveField(
-            model_name='cashdesk',
-            name='display_address',
-        ),
-    ]
+    operations = [migrations.RemoveField(model_name="cashdesk", name="display_address")]

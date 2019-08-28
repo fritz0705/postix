@@ -7,14 +7,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0033_cashdesk_printer_handles_drawer'),
-    ]
+    dependencies = [("core", "0033_cashdesk_printer_handles_drawer")]
 
     operations = [
         migrations.AlterField(
-            model_name='cashdesk',
-            name='ip_address',
-            field=models.GenericIPAddressField(verbose_name='IP address'),
-        ),
+            model_name="cashdesk",
+            name="ip_address",
+            field=models.GenericIPAddressField(verbose_name="IP address"),
+        )
     ]

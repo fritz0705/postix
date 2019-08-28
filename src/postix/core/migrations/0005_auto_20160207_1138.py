@@ -7,14 +7,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0004_warningconstraint'),
-    ]
+    dependencies = [("core", "0004_warningconstraint")]
 
     operations = [
         migrations.AlterField(
-            model_name='preorderposition',
-            name='secret',
+            model_name="preorderposition",
+            name="secret",
             field=models.CharField(db_index=True, max_length=254, unique=True),
-        ),
+        )
     ]

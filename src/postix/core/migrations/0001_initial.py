@@ -11,255 +11,515 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Cashdesk',
+            name="Cashdesk",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=254)),
-                ('ip_address', models.GenericIPAddressField()),
-                ('printer_queue_name', models.CharField(blank=True, max_length=254, null=True)),
-                ('display_address', models.GenericIPAddressField(blank=True, null=True)),
-                ('is_active', models.BooleanField(default=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=254)),
+                ("ip_address", models.GenericIPAddressField()),
+                (
+                    "printer_queue_name",
+                    models.CharField(blank=True, max_length=254, null=True),
+                ),
+                (
+                    "display_address",
+                    models.GenericIPAddressField(blank=True, null=True),
+                ),
+                ("is_active", models.BooleanField(default=True)),
             ],
         ),
         migrations.CreateModel(
-            name='CashdeskSession',
+            name="CashdeskSession",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('start', models.DateTimeField(blank=True, null=True)),
-                ('end', models.DateTimeField(blank=True, null=True)),
-                ('cash_before', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('cash_after', models.DecimalField(blank=True, decimal_places=2, max_digits=10, null=True)),
-                ('api_token', models.CharField(default=postix.core.models.generate_key, max_length=254)),
-                ('comment', models.TextField(blank=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("start", models.DateTimeField(blank=True, null=True)),
+                ("end", models.DateTimeField(blank=True, null=True)),
+                ("cash_before", models.DecimalField(decimal_places=2, max_digits=10)),
+                (
+                    "cash_after",
+                    models.DecimalField(
+                        blank=True, decimal_places=2, max_digits=10, null=True
+                    ),
+                ),
+                (
+                    "api_token",
+                    models.CharField(
+                        default=postix.core.models.generate_key, max_length=254
+                    ),
+                ),
+                ("comment", models.TextField(blank=True)),
             ],
         ),
         migrations.CreateModel(
-            name='CashdeskSessionItem',
+            name="CashdeskSessionItem",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('amount_before', models.PositiveIntegerField()),
-                ('amount_after', models.PositiveIntegerField(null=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("amount_before", models.PositiveIntegerField()),
+                ("amount_after", models.PositiveIntegerField(null=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Item',
+            name="Item",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=254)),
-                ('description', models.TextField(blank=True)),
-                ('initial_stock', models.PositiveIntegerField()),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=254)),
+                ("description", models.TextField(blank=True)),
+                ("initial_stock", models.PositiveIntegerField()),
             ],
         ),
         migrations.CreateModel(
-            name='ListConstraint',
+            name="ListConstraint",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=254)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=254)),
             ],
-            options={
-                'abstract': False,
-            },
+            options={"abstract": False},
         ),
         migrations.CreateModel(
-            name='ListConstraintEntry',
+            name="ListConstraintEntry",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=254)),
-                ('identifier', models.CharField(max_length=254)),
-                ('list', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='entries', to='core.ListConstraint')),
-            ],
-        ),
-        migrations.CreateModel(
-            name='Preorder',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('order_code', models.CharField(db_index=True, max_length=254)),
-                ('is_paid', models.BooleanField(default=False)),
-                ('warning_text', models.TextField()),
-            ],
-        ),
-        migrations.CreateModel(
-            name='PreorderPosition',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('secret', models.CharField(db_index=True, max_length=254)),
-                ('preorder', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='positions', to='core.Preorder')),
-            ],
-        ),
-        migrations.CreateModel(
-            name='Product',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=254)),
-                ('price', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('tax_rate', models.DecimalField(decimal_places=2, max_digits=4)),
-                ('is_visible', models.BooleanField(default=True)),
-                ('requires_authorization', models.BooleanField(default=False)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=254)),
+                ("identifier", models.CharField(max_length=254)),
+                (
+                    "list",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="entries",
+                        to="core.ListConstraint",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='ProductItem',
+            name="Preorder",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('amount', models.PositiveIntegerField()),
-                ('item', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='product_items', to='core.Item')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='product_items', to='core.Product')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("order_code", models.CharField(db_index=True, max_length=254)),
+                ("is_paid", models.BooleanField(default=False)),
+                ("warning_text", models.TextField()),
             ],
         ),
         migrations.CreateModel(
-            name='Quota',
+            name="PreorderPosition",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=254)),
-                ('size', models.PositiveIntegerField()),
-                ('products', models.ManyToManyField(to='core.Product')),
-            ],
-            options={
-                'abstract': False,
-            },
-        ),
-        migrations.CreateModel(
-            name='TimeConstraint',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=254)),
-                ('start', models.DateTimeField(blank=True, null=True)),
-                ('end', models.DateTimeField(blank=True, null=True)),
-                ('products', models.ManyToManyField(to='core.Product')),
-            ],
-            options={
-                'abstract': False,
-            },
-        ),
-        migrations.CreateModel(
-            name='Transaction',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('datetime', models.DateTimeField(auto_now_add=True)),
-                ('cash_given', models.DecimalField(decimal_places=2, max_digits=10, null=True)),
-                ('session', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='transactions', to='core.CashdeskSession')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("secret", models.CharField(db_index=True, max_length=254)),
+                (
+                    "preorder",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="positions",
+                        to="core.Preorder",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='TransactionPosition',
+            name="Product",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('type', models.CharField(choices=[('redeem', 'Presale redemption'), ('reverse', 'Reversal'), ('sell', 'Sale')], max_length=100)),
-                ('value', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('tax_rate', models.DecimalField(decimal_places=2, max_digits=4)),
-                ('tax_value', models.DecimalField(decimal_places=2, max_digits=10)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=254)),
+                ("price", models.DecimalField(decimal_places=2, max_digits=10)),
+                ("tax_rate", models.DecimalField(decimal_places=2, max_digits=4)),
+                ("is_visible", models.BooleanField(default=True)),
+                ("requires_authorization", models.BooleanField(default=False)),
             ],
         ),
         migrations.CreateModel(
-            name='TransactionPositionItem',
+            name="ProductItem",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('amount', models.PositiveIntegerField()),
-                ('item', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='transaction_position_items', to='core.Item')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='transaction_position_items', to='core.TransactionPosition')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("amount", models.PositiveIntegerField()),
+                (
+                    "item",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="product_items",
+                        to="core.Item",
+                    ),
+                ),
+                (
+                    "product",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="product_items",
+                        to="core.Product",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='User',
+            name="Quota",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('password', models.CharField(max_length=128, verbose_name='password')),
-                ('last_login', models.DateTimeField(blank=True, null=True, verbose_name='last login')),
-                ('username', models.CharField(max_length=254, unique=True)),
-                ('firstname', models.CharField(max_length=254)),
-                ('lastname', models.CharField(max_length=254)),
-                ('is_active', models.BooleanField(default=True)),
-                ('is_superuser', models.BooleanField(default=False)),
-                ('is_troubleshooter', models.BooleanField(default=False)),
-                ('auth_token', models.CharField(blank=True, max_length=254, null=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=254)),
+                ("size", models.PositiveIntegerField()),
+                ("products", models.ManyToManyField(to="core.Product")),
             ],
-            options={
-                'abstract': False,
-            },
+            options={"abstract": False},
+        ),
+        migrations.CreateModel(
+            name="TimeConstraint",
+            fields=[
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=254)),
+                ("start", models.DateTimeField(blank=True, null=True)),
+                ("end", models.DateTimeField(blank=True, null=True)),
+                ("products", models.ManyToManyField(to="core.Product")),
+            ],
+            options={"abstract": False},
+        ),
+        migrations.CreateModel(
+            name="Transaction",
+            fields=[
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("datetime", models.DateTimeField(auto_now_add=True)),
+                (
+                    "cash_given",
+                    models.DecimalField(decimal_places=2, max_digits=10, null=True),
+                ),
+                (
+                    "session",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="transactions",
+                        to="core.CashdeskSession",
+                    ),
+                ),
+            ],
+        ),
+        migrations.CreateModel(
+            name="TransactionPosition",
+            fields=[
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "type",
+                    models.CharField(
+                        choices=[
+                            ("redeem", "Presale redemption"),
+                            ("reverse", "Reversal"),
+                            ("sell", "Sale"),
+                        ],
+                        max_length=100,
+                    ),
+                ),
+                ("value", models.DecimalField(decimal_places=2, max_digits=10)),
+                ("tax_rate", models.DecimalField(decimal_places=2, max_digits=4)),
+                ("tax_value", models.DecimalField(decimal_places=2, max_digits=10)),
+            ],
+        ),
+        migrations.CreateModel(
+            name="TransactionPositionItem",
+            fields=[
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("amount", models.PositiveIntegerField()),
+                (
+                    "item",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="transaction_position_items",
+                        to="core.Item",
+                    ),
+                ),
+                (
+                    "product",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="transaction_position_items",
+                        to="core.TransactionPosition",
+                    ),
+                ),
+            ],
+        ),
+        migrations.CreateModel(
+            name="User",
+            fields=[
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("password", models.CharField(max_length=128, verbose_name="password")),
+                (
+                    "last_login",
+                    models.DateTimeField(
+                        blank=True, null=True, verbose_name="last login"
+                    ),
+                ),
+                ("username", models.CharField(max_length=254, unique=True)),
+                ("firstname", models.CharField(max_length=254)),
+                ("lastname", models.CharField(max_length=254)),
+                ("is_active", models.BooleanField(default=True)),
+                ("is_superuser", models.BooleanField(default=False)),
+                ("is_troubleshooter", models.BooleanField(default=False)),
+                ("auth_token", models.CharField(blank=True, max_length=254, null=True)),
+            ],
+            options={"abstract": False},
         ),
         migrations.AddField(
-            model_name='transactionposition',
-            name='authorized_by',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='authorized', to='core.User'),
+            model_name="transactionposition",
+            name="authorized_by",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="authorized",
+                to="core.User",
+            ),
         ),
         migrations.AddField(
-            model_name='transactionposition',
-            name='items',
-            field=models.ManyToManyField(through='core.TransactionPositionItem', to='core.TransactionPosition'),
+            model_name="transactionposition",
+            name="items",
+            field=models.ManyToManyField(
+                through="core.TransactionPositionItem", to="core.TransactionPosition"
+            ),
         ),
         migrations.AddField(
-            model_name='transactionposition',
-            name='listentry',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='positions', to='core.ListConstraintEntry'),
+            model_name="transactionposition",
+            name="listentry",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="positions",
+                to="core.ListConstraintEntry",
+            ),
         ),
         migrations.AddField(
-            model_name='transactionposition',
-            name='preorder_position',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='transaction_positions', to='core.PreorderPosition'),
+            model_name="transactionposition",
+            name="preorder_position",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="transaction_positions",
+                to="core.PreorderPosition",
+            ),
         ),
         migrations.AddField(
-            model_name='transactionposition',
-            name='product',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='positions', to='core.Product'),
+            model_name="transactionposition",
+            name="product",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="positions",
+                to="core.Product",
+            ),
         ),
         migrations.AddField(
-            model_name='transactionposition',
-            name='reverses',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='reversed_by', to='core.TransactionPosition'),
+            model_name="transactionposition",
+            name="reverses",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="reversed_by",
+                to="core.TransactionPosition",
+            ),
         ),
         migrations.AddField(
-            model_name='transactionposition',
-            name='transaction',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='positions', to='core.Transaction'),
+            model_name="transactionposition",
+            name="transaction",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="positions",
+                to="core.Transaction",
+            ),
         ),
         migrations.AddField(
-            model_name='product',
-            name='items',
-            field=models.ManyToManyField(through='core.ProductItem', to='core.Item'),
+            model_name="product",
+            name="items",
+            field=models.ManyToManyField(through="core.ProductItem", to="core.Item"),
         ),
         migrations.AddField(
-            model_name='listconstraint',
-            name='products',
-            field=models.ManyToManyField(to='core.Product'),
+            model_name="listconstraint",
+            name="products",
+            field=models.ManyToManyField(to="core.Product"),
         ),
         migrations.AddField(
-            model_name='cashdesksessionitem',
-            name='item',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='cashdesk_session_items', to='core.Item'),
+            model_name="cashdesksessionitem",
+            name="item",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="cashdesk_session_items",
+                to="core.Item",
+            ),
         ),
         migrations.AddField(
-            model_name='cashdesksessionitem',
-            name='session',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='cashdesk_session_items', to='core.CashdeskSession'),
+            model_name="cashdesksessionitem",
+            name="session",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="cashdesk_session_items",
+                to="core.CashdeskSession",
+            ),
         ),
         migrations.AddField(
-            model_name='cashdesksession',
-            name='backoffice_user_after',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='supervised_session_ends', to='core.User'),
+            model_name="cashdesksession",
+            name="backoffice_user_after",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="supervised_session_ends",
+                to="core.User",
+            ),
         ),
         migrations.AddField(
-            model_name='cashdesksession',
-            name='backoffice_user_before',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='supervised_session_starts', to='core.User'),
+            model_name="cashdesksession",
+            name="backoffice_user_before",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="supervised_session_starts",
+                to="core.User",
+            ),
         ),
         migrations.AddField(
-            model_name='cashdesksession',
-            name='cashdesk',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='core.Cashdesk'),
+            model_name="cashdesksession",
+            name="cashdesk",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT, to="core.Cashdesk"
+            ),
         ),
         migrations.AddField(
-            model_name='cashdesksession',
-            name='items',
-            field=models.ManyToManyField(through='core.CashdeskSessionItem', to='core.Item'),
+            model_name="cashdesksession",
+            name="items",
+            field=models.ManyToManyField(
+                through="core.CashdeskSessionItem", to="core.Item"
+            ),
         ),
         migrations.AddField(
-            model_name='cashdesksession',
-            name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='core.User'),
+            model_name="cashdesksession",
+            name="user",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT, to="core.User"
+            ),
         ),
     ]

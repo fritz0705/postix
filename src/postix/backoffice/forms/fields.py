@@ -4,8 +4,8 @@ from django import forms
 class CalculatorWidget(forms.NumberInput):
     def __init__(self, *args, attrs=None, **kwargs):
         attrs = attrs or dict()
-        attrs['type'] = 'text'
-        attrs['class'] = 'calculatable'
+        attrs["type"] = "text"
+        attrs["class"] = "calculatable"
         super().__init__(*args, attrs=attrs, **kwargs)
 
 

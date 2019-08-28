@@ -8,18 +8,44 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0036_auto_20161228_1305'),
-    ]
+    dependencies = [("core", "0036_auto_20161228_1305")]
 
     operations = [
         migrations.CreateModel(
-            name='CashdeskDevice',
+            name="CashdeskDevice",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('variant', models.CharField(choices=[('display', 'display'), ('dummy', 'dummy')], max_length=10)),
-                ('target', models.CharField(help_text='Address of any kind under which to reach the device.', max_length=100, verbose_name='Device endpoint')),
-                ('cashdesk', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='devices', to='core.Cashdesk')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "variant",
+                    models.CharField(
+                        choices=[("display", "display"), ("dummy", "dummy")],
+                        max_length=10,
+                    ),
+                ),
+                (
+                    "target",
+                    models.CharField(
+                        help_text="Address of any kind under which to reach the device.",
+                        max_length=100,
+                        verbose_name="Device endpoint",
+                    ),
+                ),
+                (
+                    "cashdesk",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="devices",
+                        to="core.Cashdesk",
+                    ),
+                ),
             ],
-        ),
+        )
     ]
