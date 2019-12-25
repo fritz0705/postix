@@ -134,11 +134,17 @@ var commands = {
     },
 
     process: function (command) {
+        var aliases = {
+            "/resupply": "/supply",
+        }
         if (command.slice(0, 1) !== "/") {
             command = "/" + command;
         }
         var args = command.split(" ");
         command = args[0];
+        if (typeof aliases[command] !== 'undefined') {
+            command = aliases[command];
+        }
         if (typeof commands[command] !== 'undefined') {
             commands[command](args);
             return true;
