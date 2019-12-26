@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpRequest, HttpResponseRedirect
@@ -33,8 +34,14 @@ class LoginView(TemplateView):
         login(request, user)
         url = request.GET.get("next")
         if url and is_safe_url(url, request.get_host()):
-            return redirect(url)
-        return redirect("troubleshooter:main")
+            response = redirect(url)
+        else:
+            response = redirect("troubleshooter:main")
+        response.set_cookie(
+            settings.LANGUAGE_COOKIE_NAME,
+            request.POST.get("language", settings.LANGUAGE_CODE),
+        )
+        return response
 
 
 def logout_view(request: HttpRequest) -> HttpResponseRedirect:
