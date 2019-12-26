@@ -3,6 +3,7 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block scripts %}
+    <script src="{% static "backoffice/js/supply.js" %}"></script>
     <script type="text/javascript" src="{% static "backoffice/js/record_list.js" %}"></script>
 {% endblock %}
 
@@ -17,5 +18,4 @@
             </button>
         </div>
     </form>
-
 {% endblock %}

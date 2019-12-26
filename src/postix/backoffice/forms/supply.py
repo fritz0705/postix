@@ -22,8 +22,12 @@ class SupplyCreateForm(forms.Form):
         self.helper.form_tag = False
 
     def clean_identifier(self):
-        if not self.cleaned_data["identifier"].startswith("/supply ") and not self.cleaned_data["identifier"].startswith("/resupply "):
-            raise ValidationError('The pack identifier needs to start with "/supply " or "/resupply ".')
+        if not self.cleaned_data["identifier"].startswith(
+            "/supply "
+        ) and not self.cleaned_data["identifier"].startswith("/resupply "):
+            raise ValidationError(
+                'The pack identifier needs to start with "/supply " or "/resupply ".'
+            )
         if ItemSupplyPack.objects.filter(
             identifier=self.cleaned_data["identifier"]
         ).exists():
