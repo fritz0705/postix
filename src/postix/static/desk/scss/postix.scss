@@ -19,6 +19,12 @@ body.login, body.error {
     width: 400px;
     margin: 20px auto 0 auto;
 }
+.languages {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+}
 
 .error-page {
     width: 400px;
