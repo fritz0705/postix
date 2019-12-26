@@ -63,10 +63,11 @@ class PreorderPosition(models.Model):
             tz = timezone.get_current_timezone()
 
             return _(
-                "This ticket ({secret}…) has already been redeemed at {datetime}."
+                "This ticket ({secret}…) has already been redeemed at {datetime} on {cashdesk}."
             ).format(
                 datetime=last_r.transaction.datetime.astimezone(tz).strftime(
                     "%Y-%m-%d %H:%M:%S"
                 ),
+                cashdesk=last_r.transaction.session.cashdesk.name,
                 secret=self.secret[:6],
             )
