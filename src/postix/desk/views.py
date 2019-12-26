@@ -1,5 +1,6 @@
 from typing import Union
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -56,8 +57,14 @@ class LoginView(TemplateView):
                 return redirect("desk:login")
 
             login(request, user)
+
             session.cashdesk.signal_next()
-            return redirect("desk:main")
+            response = redirect("desk:main")
+            response.set_cookie(
+                settings.LANGUAGE_COOKIE_NAME,
+                request.POST.get("language", settings.LANGUAGE_CODE),
+            )
+            return response
         else:
             messages.error(
                 request, _("No user account matches the entered credentials.")

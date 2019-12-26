@@ -39,6 +39,16 @@
                 <input type="password" name="password" placeholder="{% trans "Password" %}" class="form-control"
                        id="password" autocomplete="off">
             </div>
+            <div class="form-group languages">
+                <label class="radio">
+                    <input type="radio" name="language" value="de" checked>
+                    Deutsch
+                </label>
+                <label class="radio">
+                    <input type="radio" name="language" value="en">
+                    English
+                </label>
+            </div>
             <button type="submit" class="btn btn-primary btn-lg btn-block">
                 {% trans "Log In" %}
             </button>
