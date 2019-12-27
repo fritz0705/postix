@@ -162,7 +162,11 @@ def import_pretix_data(
 
         if preorder_positions:
             for pp in preorder_positions.values():
-                pp.delete()
+                if not pp.transaction_positions.exists():
+                    pp.delete()
+                else:
+                    pp.secret += pp.secret + "__disabled"
+                    pp.save()
 
         created_orders += int(created)
         loaded_orders += int(not created)
