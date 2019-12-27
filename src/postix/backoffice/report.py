@@ -127,6 +127,8 @@ def generate_item_report(session: CashdeskSession, doc) -> str:
                 ("ALIGN", (1, 0), (5, last_row), "RIGHT"),
                 ("LINEABOVE", (0, 1), (5, 1), 1.0, colors.black),
                 ("LINEABOVE", (5, last_row), (5, last_row), 1.2, colors.black),
+                ("TOPPADDING", (0, 0), (-1, -1), 1),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 1),
             ]
         ),
     )
@@ -167,6 +169,8 @@ def generate_item_report(session: CashdeskSession, doc) -> str:
                 ("ALIGN", (0, 0), (0, last_row), "LEFT"),
                 ("ALIGN", (1, 0), (4, last_row), "RIGHT"),
                 ("LINEABOVE", (0, 1), (4, 1), 1.0, colors.black),
+                ("TOPPADDING", (0, 0), (-1, -1), 1),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 1),
             ]
         ),
     )
@@ -236,6 +240,8 @@ def generate_session_closing(record, doc):
                 ("ALIGN", (1, 0), (2, last_row), "RIGHT"),
                 ("LINEABOVE", (0, 1), (2, 1), 1.0, colors.black),
                 ("LINEABOVE", (1, last_row), (2, last_row), 1.2, colors.black),
+                ("TOPPADDING", (0, 0), (-1, -1), 1),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 1),
             ]
         ),
     )
