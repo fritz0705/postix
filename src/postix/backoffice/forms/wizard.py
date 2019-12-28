@@ -76,6 +76,10 @@ class ImportForm(forms.Form):
         return [v.strip() for v in values if v.strip().isdigit()]
 
     def __init__(self, *args, **kwargs):
+        kwargs.setdefault("initial", {})
+        kwargs["initial"].setdefault(
+            "questions", EventSettings.get_solo().last_import_questions
+        )
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = "form-horizontal"

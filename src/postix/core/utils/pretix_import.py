@@ -3,7 +3,13 @@ from decimal import Decimal
 
 from django.db import transaction
 
-from postix.core.models import Cashdesk, Preorder, PreorderPosition, Product
+from postix.core.models import (
+    Cashdesk,
+    Preorder,
+    PreorderPosition,
+    Product,
+    EventSettings,
+)
 
 
 class FakeStyle:
@@ -91,6 +97,11 @@ def import_pretix_data(
     if isinstance(questions, str):
         questions = questions.split(",")
     questions = [int(q) for q in questions] if questions else list()
+
+    settings = EventSettings.get_solo()
+    settings.last_import_questions = ",".join(str(q) for q in questions)
+    settings.save(update_fields=["last_import_questions"])
+
     questions = {
         element["id"]: element
         for element in presale_export.get("questions", [])

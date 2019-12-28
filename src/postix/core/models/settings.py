@@ -68,6 +68,12 @@ class EventSettings(Exportable, SingletonModel):
             "Block everybody except for superuser users from using the server."
         ),
     )
+    last_import_questions = models.TextField(
+        verbose_name=_("Last input for imported questions"),
+        null=False,
+        blank=True,
+        default="",
+    )
 
     class Meta:
         verbose_name = "Event Settings"
