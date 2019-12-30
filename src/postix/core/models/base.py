@@ -205,6 +205,16 @@ class Product(models.Model):
         return self.is_visible and self.is_availably_by_time
 
     @cached_property
+    def preordered(self) -> int:
+        return self.preorder_positions.filter(preorder__is_paid=True, preorder__is_canceled=False).count()
+
+    @cached_property
+    def redeemed_percent(self) -> Decimal:
+        if self.preordered:
+            return Decimal(self.amount_redeemed / self.preordered * 100).quantize(Decimal('0.01'))
+        return Decimal('0.00')
+
+    @cached_property
     def amount_sold(self) -> int:
         positive = self.positions.filter(type="sell").count()
         negative = (

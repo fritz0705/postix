@@ -33,14 +33,18 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument("--ignore-sessions")
+        parser.add_argument("--ignore-cashdesks")
 
     def handle(self, *args, **kwargs):
         tz = get_current_timezone()
         sessions = (
             CashdeskSession.objects.exclude(cashdesk__name__icontains="handkasse")
             .exclude(cashdesk__handles_items=False)
-            .exclude(
+                .exclude(
                 id__in=[int(a) for a in kwargs.get("ignore_sessions", "").split(",")]
+            )
+            .exclude(
+                cashdesk_id__in=[int(a) for a in kwargs.get("ignore_cashdesks", "").split(",")]
             )
             .values("id", "start", "end", "cashdesk")
         )
@@ -97,6 +101,6 @@ class Command(BaseCommand):
         axs[1, 0].set_ylabel(u"Number of Transactions per 30 minutes")
         axs[2, 0].set_xlabel(u"Time of day")
         fig.tight_layout()
-        fig.suptitle("Cashdesk transactions 35c3")
+        fig.suptitle("Cashdesk transactions")
         plt.savefig("transactions.svg")
         plt.savefig("transactions.png")

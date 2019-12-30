@@ -27,8 +27,8 @@
 <ul>
     {% for product in products %}
     <li>
-        {% blocktrans with redeemed=product.amount_redeemed sold=product.amount_sold name=product.name trimmed %}
-        <strong>{{ name }}</strong> was sold {{ sold }} times and redeemed {{ redeemed }} times.
+        {% blocktrans with redeemed=product.amount_redeemed sold=product.amount_sold name=product.name percent=product.redeemed_percent preordered=product.preordered trimmed %}
+        <strong>{{ name }}</strong> was sold {{ sold }} times and redeemed {{ redeemed }} ({{ percent }} % of {{ preordered }}) times.
         {% endblocktrans %}
 
     </li>
