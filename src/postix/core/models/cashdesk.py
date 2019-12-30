@@ -7,6 +7,7 @@ from typing import Dict, List, Union
 from django.db import models
 from django.db.models import Sum
 from django.utils.crypto import get_random_string
+from django.utils.functional import cached_property
 from django.utils.timezone import now
 from django.utils.translation import ugettext as _
 
@@ -81,6 +82,10 @@ class Cashdesk(Exportable, models.Model):
             for session in self.sessions.filter(end__isnull=True)
             if session.is_active()
         ]
+
+    @cached_property
+    def cash_balance(self):
+        return (Decimal('-1.00') * (CashMovement.objects.filter(session__cashdesk=self).aggregate(s=Sum('cash'))['s'] or Decimal('0.00'))).quantize(Decimal('0.01'))
 
 
 class CashdeskDeviceVariantChoices:

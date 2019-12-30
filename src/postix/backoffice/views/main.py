@@ -1,7 +1,7 @@
 from django.db.models import Sum
 from django.views.generic import TemplateView
 
-from postix.core.models import Quota
+from postix.core.models import Quota, Cashdesk
 from postix.core.models.base import Item, ItemSupplyPack, Product
 from postix.core.models.preorder import PreorderPosition
 
@@ -37,4 +37,5 @@ class MainView(SuperuserRequiredMixin, TemplateView):
             .values("item", "item__name")
             .annotate(s=Sum("amount"))
         )
+        ctx["cashdesks"] = Cashdesk.objects.all()
         return ctx

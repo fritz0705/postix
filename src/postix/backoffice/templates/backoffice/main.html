@@ -1,5 +1,7 @@
 {% extends 'backoffice/base.html' %}
 {% load i18n %}
+{% load l10n %}
+{% load humanize %}
 {% load crispy_forms_tags %}
 {% load static %}
 
@@ -58,6 +60,19 @@
             {% endblocktrans %}
 
         </li>
+        {% endfor %}
+    </ul>
+
+    <h3>{% trans "Cash movements total" %}</h3>
+
+    <ul>
+        {% for cashdesk in cashdesks %}
+            <li>
+                {% blocktrans with name=cashdesk.name balance=cashdesk.cash_balance|intcomma trimmed %}
+                    <strong>{{ name }}</strong>: {{ balance }}
+                {% endblocktrans %}
+
+            </li>
         {% endfor %}
     </ul>
 
